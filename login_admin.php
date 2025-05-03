@@ -34,15 +34,12 @@
           <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
           <span class="ml-2 text-sm text-gray-600">Remember me</span>
         </label>
-        <!-- <a href="forgot.php" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a> -->
       </div>
 
       <button type="submit" id="btnLogin" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">Sign In</button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-gray-600">
-      Don't have an account? <a href="signup.php" class="text-indigo-600 hover:text-indigo-500">Sign up</a>
-    </p>
+   
   </div>
 </div>
 
