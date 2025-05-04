@@ -85,20 +85,24 @@ if (isset($_SESSION['id'])) {
         <span>Dashboard</span>
     </a>
 
-    <a href="sales" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
-        <span class="material-icons">point_of_sale</span>
-        <span>Orders</span>
+    <a href="member" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
+        <span class="material-icons">verified_user</span>
+        <span>Verify Member</span>
     </a>
+
+
+    <a href="sales" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
+    <span class="material-icons">local_shipping</span>
+    <span>Orders</span>
+</a>
+
 
     <a href="inventory" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">store</span>
         <span>Inventory</span>
     </a>
 
-    <a href="history" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
-        <span class="material-icons">verified_user</span>
-        <span>Verify Member</span>
-    </a>
+    
 
     <a href="production" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">precision_manufacturing</span>
