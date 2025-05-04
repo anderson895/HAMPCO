@@ -120,7 +120,7 @@
 
 
     <p class="mt-6 text-center text-sm text-gray-600">
-      Already have an account? <a href="login.php" class="text-indigo-600 hover:text-indigo-500" id="btnRegister">Log in</a>
+      Already have an account? <a href="login_member" class="text-indigo-600 hover:text-indigo-500" id="btnRegister">Log in</a>
     </p>
   </div>
 
