@@ -7,7 +7,7 @@
 <div class="bg-gray-100 flex items-center justify-center min-h-screen bg-cover bg-center" style="background-image: url('assets/image/banner.jpg');">
 
   <!-- Login Area -->
-  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+  <div class="mt-3 mb-3 w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
 
   <!-- Spinner -->
   <div id="spinner" style="display:none;">

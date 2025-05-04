@@ -24,7 +24,7 @@
       <div class="flex items-center space-x-3">
         <!-- <img src="admin/assets/logo1.png" alt="Logo" class="w-12 h-12 hidden sm:block"> -->
         <div class="text-xl font-bold text-gray-800">
-          <a href="login" class="text-gray-700 hover:text-blue-600 transition">HAMPCO</a>
+          <a href="#" class="text-gray-700 hover:text-blue-600 transition">HAMPCO</a>
         </div>
       </div>
 
