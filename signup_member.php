@@ -16,10 +16,10 @@
 
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register As Member</h2>
     
-    <form id="FrmRegister" class="space-y-6">
+    <form id="FrmRegister_Member" class="space-y-6">
   <!-- First Name -->
   <div class="relative">
-    <input type="text" id="first-name" name="first-name" placeholder=" " required
+    <input type="text" id="first-name" name="first-name" placeholder=" " 
       class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
     <label for="first-name"
       class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
@@ -29,7 +29,7 @@
 
   <!-- Last Name -->
   <div class="relative">
-    <input type="text" id="last-name" name="last-name" placeholder=" " required
+    <input type="text" id="last-name" name="last-name" placeholder=" " 
       class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
     <label for="last-name"
       class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
@@ -37,19 +37,30 @@
     </label>
   </div>
 
-  <!-- Email -->
-  <div class="relative">
-    <input type="email" id="email" name="email" placeholder=" " required
-      class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
-    <label for="email"
-      class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
-      Email
-    </label>
-  </div>
+ <!-- Email -->
+<div class="relative">
+  <input type="email" id="email" name="email" placeholder=" " 
+    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
+  <label for="email"
+    class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
+    Email
+  </label>
+</div>
+
+<!-- Phone -->
+<div class="relative">
+  <input type="text" id="phone" name="phone" placeholder=" " 
+    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
+  <label for="phone"
+    class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
+    Phone
+  </label>
+</div>
+
 
   <!-- Role Selection: Knotter, Warper, Weaver -->
 <div class="relative">
-  <select id="role" name="role" required
+  <select id="role" name="role" 
     class="block w-full px-2.5 pb-2.5 pt-4 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer">
     
     <option value="" disabled selected>Select Role</option> <!-- Default option to show the label initially -->
@@ -65,7 +76,7 @@
 
 <!-- Sex Selection -->
 <div class="relative">
-  <select id="sex" name="sex" required
+  <select id="sex" name="sex" 
     class="block w-full px-2.5 pb-2.5 pt-4 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer">
     
     <option value="" disabled selected>Select Sex</option> <!-- Default option to show the label initially -->
@@ -81,7 +92,7 @@
 
   <!-- ID Number -->
   <div class="relative">
-    <input type="text" id="id_number" name="id_number" placeholder=" " required
+    <input type="text" id="id_number" name="id_number" placeholder=" " 
       class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
     <label for="id_number"
       class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
@@ -91,7 +102,7 @@
 
   <!-- Password -->
   <div class="relative">
-    <input type="password" id="password" name="password" placeholder=" " required
+    <input type="password" id="password" name="password" placeholder=" " 
       class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
     <label for="password"
       class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
@@ -101,7 +112,7 @@
 
   <!-- Confirm Password -->
   <div class="relative">
-    <input type="password" id="confirm-password" name="confirm-password" placeholder=" " required
+    <input type="password" id="confirm-password" name="confirm-password" placeholder=" " 
       class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-white rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-500 peer" />
     <label for="confirm-password"
       class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-indigo-600 start-1">
