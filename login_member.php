@@ -3,22 +3,19 @@
 <?php include "header.php"?>
 
 
-
 <div class="bg-gray-100 flex items-center justify-center min-h-screen bg-cover bg-center" style="background-image: url('assets/image/banner.jpg');">
 
-  <!-- Login Area -->
-  <div class="mt-3 mb-3 w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+  <!-- Login Area Wrapper with relative for absolute positioning -->
+  <div class="mt-3 mb-3 w-full max-w-md bg-white p-8 rounded-lg shadow-lg relative">
 
-  <!-- Spinner -->
-  <div id="spinner" style="display:none;">
-        <div class=" absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
-          <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-     </div>
+    <!-- Spinner overlay (initially hidden) -->
+    <div id="spinner" class="spinner absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 " style="display:none;">
+      <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Member</h2>
-    
-    <form id="frmLogin" class="space-y-6">
+
+    <form id="FrmLogin_Member" class="space-y-6">
       <!-- Email -->
       <div class="relative">
         <input type="email" id="email" name="email" placeholder=" " required
@@ -54,11 +51,11 @@
       </button>
     </form>
 
-
     <p class="mt-6 text-center text-sm text-gray-600">
       Don't have an account? <a href="signup_member" class="text-indigo-600 hover:text-indigo-500">Sign up</a>
     </p>
   </div>
 </div>
+
 
 <?php include "footer.php";?>

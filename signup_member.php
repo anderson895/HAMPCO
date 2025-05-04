@@ -6,12 +6,10 @@
   <!-- Registration Area -->
   <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg relative mt-3 mb-3">
     
-    <!-- Spinner -->
-     <div id="spinner" style="display:none;">
-        <div class=" absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
-          <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-     </div>
+    <!-- Spinner overlay (initially hidden) -->
+    <div id="spinner" class="spinner absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 " style="display:none;">
+      <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
    
 
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register As Member</h2>
