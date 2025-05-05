@@ -81,25 +81,23 @@ if (isset($_SESSION['id'])) {
 
     <nav class="space-y-4 text-left lg:text-left">
     <?php if ($On_Session[0]['status'] == 1) { ?>
-        <a href="home" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
+        <a href="member_dashboard" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
             <span class="material-icons">home</span>
             <span>Home</span>
         </a>
 
-        <a href="inventory" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
-            <span class="material-icons">store</span>
-            <span>Inventory</span>
+        <a href="production" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
+            <span class="material-icons">precision_manufacturing</span>
+            <span>Production Line</span>
         </a>
 
-        <a href="sales" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
-            <span class="material-icons">point_of_sale</span>
-            <span>Sales</span>
+        <a href="settings" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
+            <span class="material-icons">settings</span>
+            <span>Settings</span>
         </a>
 
-        <a href="history" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
-            <span class="material-icons">history</span>
-            <span>History</span>
-        </a>
+
+      
     <?php } ?>
        
     
