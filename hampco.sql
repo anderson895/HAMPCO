@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2025 at 02:12 PM
+-- Generation Time: May 05, 2025 at 06:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -66,11 +66,8 @@ CREATE TABLE `user_member` (
 --
 
 INSERT INTO `user_member` (`id`, `id_number`, `fullname`, `email`, `phone`, `role`, `sex`, `password`, `date_created`, `status`) VALUES
-(4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-04 12:00:01', 1),
-(5, '12312', 'test padilla', 'test@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$crcxYtbIlQhQpEWNhujLN.qGH3meHrQd2MAOFzY/tLY82xg4NY0Y.', '2025-05-04 09:45:24', 0),
-(6, '12312', 'test padilla', 'test@gmail.com', '09454454741', 'weaver', 'female', '$2y$10$1HmhHTE0IpG96TAUspFGn.EVJkueQBf2.qrbT.ep4q2tbDm0N5UzO', '2025-05-04 09:45:57', 0),
-(7, '111111', 'joshua padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-04 09:48:53', 0),
-(8, '111111', 'joshua padilla', 'batman@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$0MKOBRDbT9wKJ375rh5pY.kj0P6QoL3GXpydgpgcXxk.OP9YztJfm', '2025-05-04 12:05:50', 1);
+(4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-05 04:07:41', 1),
+(7, '111111', 'joshua padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-05 04:07:14', 1);
 
 --
 -- Indexes for dumped tables

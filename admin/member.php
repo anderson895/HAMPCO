@@ -30,25 +30,7 @@
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm">
-            <!-- Sample row -->
-            <tr class="border-b border-gray-200 hover:bg-gray-50">
-                <td class="py-3 px-6 text-left">2025001</td>
-                <td class="py-3 px-6 text-left">Juan Dela Cruz</td>
-                <td class="py-3 px-6 text-left">juan@example.com</td>
-                <td class="py-3 px-6 text-left">09171234567</td>
-                <td class="py-3 px-6 text-left">Admin</td>
-                <td class="py-3 px-6 text-left">Male</td>
-                <td class="py-3 px-6 text-left">Waiting For Verification</td>
-                <td class="py-3 px-6 flex space-x-2">
-                    <button class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow">
-                        <span class="material-icons text-sm mr-1">check_circle</span> Verify
-                    </button>
-                    <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow">
-                        <span class="material-icons text-sm mr-1">cancel</span> Decline
-                    </button>
-                </td>
-            </tr>
-            <!-- Add more rows as needed -->
+           <?php include "backend/end-points/list_member.php";?>
         </tbody>
     </table>
 </div>
