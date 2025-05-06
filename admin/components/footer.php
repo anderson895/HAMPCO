@@ -27,7 +27,9 @@
 
 
 <script>
-  
+   $("#toggleAssets").click(function(){
+      $("#assetsDropdown").slideToggle(300);
+    });
   
   const overlay = document.getElementById('overlay');
 

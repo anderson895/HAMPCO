@@ -73,7 +73,7 @@
 
 
             <div class="flex justify-end gap-2">
-                <button type="button" id="closeModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+                <button type="button" id="closeModal" class="closeModal bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
                 <button type="submit" id="submitAddRawMaterials" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add</button>
             </div>
         </form>
@@ -86,7 +86,7 @@
             $('#RawMaterialsModal').removeClass('hidden');
         });
 
-        $('#closeModal').on('click', function(){
+        $('.closeModal').on('click', function(){
             $('#RawMaterialsModal').addClass('hidden');
         });
 
@@ -106,7 +106,7 @@
                     if (response.status === 'success') {
                         alertify.success(response.message);  
                         setTimeout(function () {
-                            window.location.href = "inventory"; 
+                            window.location.href = "raw_materials"; 
                         }, 1000);
                     } else {
                         alertify.error(response.message); 
