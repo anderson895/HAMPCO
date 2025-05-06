@@ -69,7 +69,7 @@ if ($fetch_all_materials->num_rows > 0) {
             
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">Quantity</label>
-                <input type="number" name="rm_quantity" id="rm_quantity" class="w-full border rounded p-2" required>
+                <input type="text" name="rm_quantity" id="rm_quantity" class="w-full border rounded p-2" required>
             </div>
             
             <div class="mb-4">

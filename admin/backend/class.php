@@ -55,7 +55,7 @@ class global_class extends db_connect
             VALUES (?, ?, ?, ?)
         ");
 
-        $query->bind_param("ssis", $rm_name, $rm_description, $rm_qty, $rm_status);
+        $query->bind_param("ssss", $rm_name, $rm_description, $rm_qty, $rm_status);
 
         $result = $query->execute();
         $query->close();
