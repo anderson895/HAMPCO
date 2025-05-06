@@ -9,6 +9,6 @@ session_unset();
 session_destroy();
 
 // Redirect to the login page or home page
-header("Location: ../login_member");
+header("Location: ../login_admin");
 exit();
 ?>
