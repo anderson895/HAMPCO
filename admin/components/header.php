@@ -91,7 +91,7 @@ if (isset($_SESSION['id'])) {
     </a>
 
 
-    <a href="production" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
+    <a href="production_line" class="flex items-center lg:justify-start space-x-3 text-gray-600 hover:text-blue-500 hover:bg-gray-100 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">precision_manufacturing</span>
         <span>Production Line</span>
     </a>

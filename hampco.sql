@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2025 at 06:18 AM
+-- Generation Time: May 06, 2025 at 01:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `hampco`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `raw_materials`
+--
+
+CREATE TABLE `raw_materials` (
+  `id` int(11) NOT NULL,
+  `rm_name` varchar(60) NOT NULL,
+  `rm_description` text DEFAULT NULL,
+  `rm_quantity` int(11) NOT NULL,
+  `rm_status` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -69,9 +83,29 @@ INSERT INTO `user_member` (`id`, `id_number`, `fullname`, `email`, `phone`, `rol
 (4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-05 04:07:41', 1),
 (7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-05 04:13:48', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weaver`
+--
+
+CREATE TABLE `weaver` (
+  `id` int(11) NOT NULL,
+  `category` varchar(60) NOT NULL,
+  `product` varchar(60) NOT NULL,
+  `product_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`product_details`)),
+  `status` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `raw_materials`
+--
+ALTER TABLE `raw_materials`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user_admin`
@@ -86,8 +120,20 @@ ALTER TABLE `user_member`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `weaver`
+--
+ALTER TABLE `weaver`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `raw_materials`
+--
+ALTER TABLE `raw_materials`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_admin`
@@ -100,6 +146,12 @@ ALTER TABLE `user_admin`
 --
 ALTER TABLE `user_member`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `weaver`
+--
+ALTER TABLE `weaver`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

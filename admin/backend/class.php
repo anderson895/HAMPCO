@@ -14,6 +14,57 @@ class global_class extends db_connect
 
 
 
+    public function delete_raw_material($id)
+    {
+        $query = $this->conn->prepare("
+            DELETE FROM `raw_materials` 
+            WHERE `id` = ?
+        ");
+
+        $query->bind_param("i", $id);
+        
+        $result = $query->execute();
+        $query->close();
+
+        return $result;
+    }
+
+
+
+    public function update_raw_material($id, $name, $desc, $qty, $status)
+    {
+        $query = $this->conn->prepare("
+            UPDATE `raw_materials` 
+            SET `rm_name` = ?, `rm_description` = ?, `rm_quantity` = ?, `rm_status` = ? 
+            WHERE `id` = ?
+        ");
+    
+        $query->bind_param("ssisi", $name, $desc, $qty, $status, $id);
+        
+        $result = $query->execute();
+        $query->close();
+    
+        return $result;
+    }
+    
+
+    public function AddRawMaterials($rm_name, $rm_description, $rm_qty, $rm_status)
+    {
+        $query = $this->conn->prepare("
+            INSERT INTO `raw_materials` (`rm_name`, `rm_description`, `rm_quantity`, `rm_status`)
+            VALUES (?, ?, ?, ?)
+        ");
+
+        $query->bind_param("ssis", $rm_name, $rm_description, $rm_qty, $rm_status);
+
+        $result = $query->execute();
+        $query->close();
+
+        return $result;
+    }
+
+
+
     public function RegisterMember($actionType, $userId)
     {
         if ($actionType == "verify") {
@@ -28,11 +79,8 @@ class global_class extends db_connect
                 WHERE `id` = ?
             ");
         } else {
-            // Invalid actionType
             return false;
         }
-    
-        // Bind parameter (userId as integer)
         $query->bind_param("i", $userId);
     
         $result = $query->execute();
@@ -68,8 +116,25 @@ class global_class extends db_connect
     }
     
     
+    public function fetch_all_materials() {
+
+        $sql = "SELECT 
+                    rm.id AS rmid, 
+                    rm.rm_name,
+                    rm.rm_description,
+                    rm.rm_quantity,
+                    CASE 
+                        WHEN rm.rm_quantity = 0 THEN 'Out of Stocks'
+                        ELSE rm.rm_status
+                    END AS rm_status
+                FROM raw_materials AS rm
+                ORDER BY rm.id ASC";
     
-        
+        $result = $this->conn->query($sql);
+        return $result;
+    
+    }
+    
 
 
 
