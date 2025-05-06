@@ -54,7 +54,7 @@
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">Description</label>
-                <input type="text" name="rm_description" id="rm_description" class="w-full border rounded p-2" placeholder="" required>
+                <input type="text" name="rm_description" id="rm_description" class="w-full border rounded p-2" placeholder="">
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">Quantity</label>
