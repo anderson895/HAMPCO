@@ -115,39 +115,147 @@ include "components/header.php";
 
 
 
-
-
-
-
 <!-- Modal -->
-<div id="progressModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+<div id="progressModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
         <h2 class="text-xl font-semibold mb-4">Create Progress</h2>
-        <form id="progressForm">
-            <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Raw Material Used</label>
-                <input type="text" class="w-full border rounded p-2" placeholder="" required>
+
+        <form id="frmCreateProgress" class="space-y-4">
+            <!-- Material Name -->
+            <div>
+                <label for="material_name" class="block text-sm font-medium text-gray-700">Material Name</label>
+                <input type="text" id="material_name" name="material_name" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">How many meters</label>
-                <input type="number" class="w-full border rounded p-2" placeholder="" required>
+
+            <!-- First Raw Material -->
+            <div class="previous-work-entry bg-white p-6 rounded-2xl shadow-lg border border-gray-300 mb-4">
+                <div class="mb-5 text-center">
+                    <h6 class="text-lg font-semibold text-gray-800">Raw Material 1</h6>
+                    <hr class="mt-2 border-gray-300">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Raw Material Used</label>
+                        <input type="text" name="raw_used[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Quantity Used</label>
+                        <input type="text" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                    </div>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Status</label>
-                <select class="w-full border rounded p-2" required>
-                    <option value="" disabled selected>Select status</option>
+
+            <!-- Additional Raw Materials -->
+            <div id="otherRawMaterialsContainer" class="space-y-4"></div>
+            <button type="button" id="addOtherWorkMaterials" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600">Add Raw</button>
+
+            <!-- Status Dropdown -->
+            <div>
+                <label for="rm_status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select name="rm_status" id="rm_status" class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                    <option value="">Select status</option>
                     <option value="On Progress">On Progress</option>
                     <option value="Done">Done</option>
                 </select>
             </div>
 
+            <!-- Action Buttons -->
             <div class="flex justify-end gap-2">
                 <button type="button" id="closeModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
+                <button type="submit" id="submitAddRawMaterials" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Create</button>
             </div>
         </form>
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+let workCount = 1;
+
+function addOtherWorkMaterials(workNumber) {
+    const entry = `
+        <div class="previous-work-entry bg-white p-6 rounded-2xl shadow-lg border border-gray-300 mb-4">
+            <div class="mb-5 text-center">
+                <h6 class="text-lg font-semibold text-gray-800">Raw Material ${workNumber + 1}</h6>
+                <hr class="mt-2 border-gray-300">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Raw Material Used</label>
+                    <input type="text" name="raw_used[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Quantity Used</label>
+                    <input type="text" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                </div>
+            </div>
+            <button type="button" class="removeWork mt-4 w-full px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600">Remove</button>
+        </div>
+    `;
+    $("#otherRawMaterialsContainer").append(entry);
+}
+
+$(document).ready(function () {
+    $('#addOtherWorkMaterials').click(function () {
+        addOtherWorkMaterials(workCount);
+        workCount++;
+    });
+
+    $(document).on('click', '.removeWork', function () {
+        $(this).closest('.previous-work-entry').remove();
+        workCount--;
+    });
+
+    $('#closeModal').click(function () {
+        $('#progressModal').addClass('hidden');
+    });
+
+    $('#frmCreateProgress').submit(function (event) {
+        event.preventDefault();
+
+        // Collect form data
+        const formData = new FormData(this);
+        formData.append('requestType', 'CreateProgress');
+
+        // Send data
+        $.ajax({
+            url: 'backend/end-points/controller.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                $('#submitAddRawMaterials').prop('disabled', true).text('Submitting...');
+            },
+            success: function (response) {
+                try {
+                    const res = JSON.parse(response);
+                    if (res.success) {
+                        alert('Progress submitted successfully!');
+                        $('#frmCreateProgress')[0].reset();
+                        $('#otherRawMaterialsContainer').empty();
+                        workCount = 1;
+                        $('#progressModal').addClass('hidden');
+                    } else {
+                        alert('Error: ' + res.message);
+                    }
+                } catch (e) {
+                    alert('Unexpected response: ' + response);
+                }
+            },
+            error: function () {
+                alert('Failed to submit. Please try again.');
+            },
+            complete: function () {
+                $('#submitAddRawMaterials').prop('disabled', false).text('Create');
+            }
+        });
+    });
+});
+</script>
+
+
+
 
 <script>
     $(document).ready(function(){
