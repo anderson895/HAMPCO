@@ -39,7 +39,7 @@ include "components/header.php";
         <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Category</th>
-                <th class="py-3 px-6 text-left">Product</th>
+                <th class="py-3 px-6 text-left">Material</th>
                 <th class="py-3 px-6 text-left">Status</th>
                 <th class="py-3 px-6 text-left">Action</th>
             </tr>
@@ -128,6 +128,15 @@ include "components/header.php";
                 <input type="text" id="material_name" name="material_name" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
             </div>
 
+
+            <!-- Category -->
+            <div>
+                <label for="material_category" class="block text-sm font-medium text-gray-700">Category</label>
+                <input type="text" id="material_category" name="material_category" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+            
+            </div>
+
+
             <!-- First Raw Material -->
             <div class="previous-work-entry bg-white p-6 rounded-2xl shadow-lg border border-gray-300 mb-4">
                 <div class="mb-5 text-center">
@@ -157,6 +166,7 @@ include "components/header.php";
             <div id="otherRawMaterialsContainer" class="space-y-4"></div>
             <button type="button" id="addOtherWorkMaterials" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600">Add Raw</button>
 
+            
             <!-- Status Dropdown -->
             <div>
                 <label for="rm_status" class="block text-sm font-medium text-gray-700">Status</label>
