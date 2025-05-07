@@ -25,7 +25,7 @@ class global_class extends db_connect
             $materials[] = [
                 'id' => $row['rmid'],
                 'name' => $row['rm_name'],
-                'quantity&unit' => $row['rm_quantity']
+                'quantity_unit' => $row['rm_quantity']
             ];
         }
     

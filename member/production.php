@@ -143,7 +143,12 @@ include "components/header.php";
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Quantity Used</label>
-                        <input type="number" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                        <div class="relative">
+                        <input type="number" name="raw_qty[]" 
+                                class="w-full mt-1 px-4 py-2 pr-16 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" 
+                                required>
+                        <span class="quantity-unit-label absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,9 +188,9 @@ function loadRawMaterials($select) {
             $select.empty();
             $select.append('<option value="">Select raw material</option>');
             data.forEach(function (item) {
-                $select.append('<option value="' + item.id + '">' + item.name + ' (Available: ' + item['quantity&unit'] + ')</option>');
+                $select.append('<option value="' + item.id + '" data-unit="' + item.quantity_unit + '">' + item.name + ' (Available: ' + item['quantity_unit'] + ')</option>');
             });
-            updateDisabledOptions(); // Disable selected options initially
+            updateDisabledOptions();
         },
         error: function () {
             console.error("Failed to fetch raw materials.");
@@ -204,12 +209,24 @@ $(document).ready(function () {
 
     $('#otherRawMaterialsContainer').on('click', '.removeWork', function () {
         $(this).closest('.previous-work-entry').remove();
-        updateDisabledOptions(); // Recalculate on remove
+        updateDisabledOptions();
     });
 
     // Trigger update when any dropdown changes
     $(document).on('change', '.raw-used-select', function () {
         updateDisabledOptions();
+
+        // Get selected option's unit
+        const selectedOption = $(this).find('option:selected');
+        const fullUnit = selectedOption.data('unit') || '';
+        const unitParts = fullUnit.toString().split(' ');
+        const shortUnit = unitParts[unitParts.length - 1] || '—';
+
+        // Update corresponding unit label
+        const unitLabel = $(this).closest('.grid').find('span.quantity-unit-label');
+        if (unitLabel.length) {
+            unitLabel.text(shortUnit);
+        }
     });
 });
 
@@ -232,7 +249,12 @@ function addOtherWorkMaterials() {
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Quantity Used</label>
-                    <input type="number" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                    <div class="relative">
+                        <input type="number" name="raw_qty[]" 
+                            class="w-full mt-1 px-4 py-2 pr-16 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" 
+                            required>
+                        <span class="quantity-unit-label absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"></span>
+                    </div>
                 </div>
             </div>
             <button type="button" class="removeWork mt-4 w-full px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600">Remove</button>
