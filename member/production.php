@@ -117,7 +117,8 @@ include "components/header.php";
 
 <!-- Modal -->
 <div id="progressModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+<div class="bg-white rounded-lg p-6 w-full max-w-3xl shadow-xl">
+
         <h2 class="text-xl font-semibold mb-4">Create Progress</h2>
 
         <form id="frmCreateProgress" class="space-y-4">
@@ -136,11 +137,13 @@ include "components/header.php";
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Raw Material Used</label>
-                        <input type="text" name="raw_used[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                        <select name="raw_used[]" id="raw_used_0" class="raw-used-select w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                            <option value="">Select raw material</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Quantity Used</label>
-                        <input type="text" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                        <input type="number" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
                     </div>
                 </div>
             </div>
@@ -168,12 +171,53 @@ include "components/header.php";
     </div>
 </div>
 
+
 <!-- JavaScript -->
 <script>
-let workCount = 1;
+function loadRawMaterials($select) {
+    $.ajax({
+        url: 'backend/end-points/get_raw_materials.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $select.empty();
+            $select.append('<option value="">Select raw material</option>');
+            data.forEach(function (item) {
+                $select.append('<option value="' + item.id + '">' + item.name + ' (Available: ' + item['quantity&unit'] + ')</option>');
+            });
+            updateDisabledOptions(); // Disable selected options initially
+        },
+        error: function () {
+            console.error("Failed to fetch raw materials.");
+        }
+    });
+}
 
-function addOtherWorkMaterials(workNumber) {
-    const entry = `
+$(document).ready(function () {
+    loadRawMaterials($('#raw_used_0'));
+
+    $('#addOtherWorkMaterials').on('click', addOtherWorkMaterials);
+
+    $('#closeModal').on('click', function () {
+        $('#progressModal').addClass('hidden');
+    });
+
+    $('#otherRawMaterialsContainer').on('click', '.removeWork', function () {
+        $(this).closest('.previous-work-entry').remove();
+        updateDisabledOptions(); // Recalculate on remove
+    });
+
+    // Trigger update when any dropdown changes
+    $(document).on('change', '.raw-used-select', function () {
+        updateDisabledOptions();
+    });
+});
+
+let workCount = 1;
+function addOtherWorkMaterials() {
+    const workNumber = workCount++;
+
+    const entry = $(`
         <div class="previous-work-entry bg-white p-6 rounded-2xl shadow-lg border border-gray-300 mb-4">
             <div class="mb-5 text-center">
                 <h6 class="text-lg font-semibold text-gray-800">Raw Material ${workNumber + 1}</h6>
@@ -182,30 +226,53 @@ function addOtherWorkMaterials(workNumber) {
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Raw Material Used</label>
-                    <input type="text" name="raw_used[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                    <select name="raw_used[]" id="raw_used_${workNumber}" class="raw-used-select w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                        <option value="">Select raw material</option>
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Quantity Used</label>
-                    <input type="text" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
+                    <input type="number" name="raw_qty[]" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
                 </div>
             </div>
             <button type="button" class="removeWork mt-4 w-full px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600">Remove</button>
         </div>
-    `;
-    $("#otherRawMaterialsContainer").append(entry);
+    `);
+
+    $('#otherRawMaterialsContainer').append(entry);
+    const newSelect = entry.find('select');
+    loadRawMaterials(newSelect);
 }
 
+// Disable already selected options in all selects
+function updateDisabledOptions() {
+    let selectedValues = [];
+    $('.raw-used-select').each(function () {
+        const val = $(this).val();
+        if (val) selectedValues.push(val);
+    });
+
+    $('.raw-used-select').each(function () {
+        const currentSelect = $(this);
+        const currentValue = currentSelect.val();
+
+        currentSelect.find('option').each(function () {
+            const option = $(this);
+            if (option.val() && option.val() !== currentValue && selectedValues.includes(option.val())) {
+                option.prop('disabled', true);
+            } else {
+                option.prop('disabled', false);
+            }
+        });
+    });
+}
+
+
+
+
+
 $(document).ready(function () {
-    $('#addOtherWorkMaterials').click(function () {
-        addOtherWorkMaterials(workCount);
-        workCount++;
-    });
-
-    $(document).on('click', '.removeWork', function () {
-        $(this).closest('.previous-work-entry').remove();
-        workCount--;
-    });
-
+    
     $('#closeModal').click(function () {
         $('#progressModal').addClass('hidden');
     });
@@ -267,12 +334,7 @@ $(document).ready(function () {
             $('#progressModal').addClass('hidden');
         });
 
-        $('#progressForm').on('submit', function(e){
-            e.preventDefault();
-            // You can handle form submission here (e.g., AJAX post)
-            alert('Progress saved!');
-            $('#progressModal').addClass('hidden');
-        });
+       
     });
 </script>
 

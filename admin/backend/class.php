@@ -64,6 +64,8 @@ class global_class extends db_connect
     }
 
 
+  
+    
 
     public function RegisterMember($actionType, $userId)
     {
