@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2025 at 01:51 PM
+-- Generation Time: May 07, 2025 at 06:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `materials`
+--
+
+CREATE TABLE `materials` (
+  `id` int(11) NOT NULL,
+  `material_name` varchar(60) NOT NULL,
+  `material_category` varchar(60) NOT NULL,
+  `material_raw_used` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `material_status` varchar(60) NOT NULL,
+  `material_date_added` datetime DEFAULT NULL,
+  `material_last_update` datetime DEFAULT NULL,
+  `material_member_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `raw_materials`
 --
 
@@ -31,9 +48,19 @@ CREATE TABLE `raw_materials` (
   `id` int(11) NOT NULL,
   `rm_name` varchar(60) NOT NULL,
   `rm_description` text DEFAULT NULL,
-  `rm_quantity` int(11) NOT NULL,
+  `rm_quantity` varchar(255) NOT NULL,
   `rm_status` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `raw_materials`
+--
+
+INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `rm_status`) VALUES
+(9, 'silk lambo', '', '900 kilo', 'Available'),
+(10, 'pina loose liniwan', '', '13 bundle', 'Available'),
+(11, 'abaca loose', '', '46 bundle', 'Available'),
+(12, 'silk 21d', '', '86,676 gram', 'Available');
 
 -- --------------------------------------------------------
 
@@ -102,6 +129,12 @@ CREATE TABLE `weaver` (
 --
 
 --
+-- Indexes for table `materials`
+--
+ALTER TABLE `materials`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
@@ -130,10 +163,16 @@ ALTER TABLE `weaver`
 --
 
 --
+-- AUTO_INCREMENT for table `materials`
+--
+ALTER TABLE `materials`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_admin`
