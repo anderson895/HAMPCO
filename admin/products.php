@@ -44,7 +44,7 @@
 
 
 <!-- Modal -->
-<div id="RawMaterialsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+<div id="RawMaterialsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center " style="display:none;">
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">Add Raw Materials</h2>
         <form id="AddRawMaterialsForm">
@@ -73,7 +73,7 @@
 
 
             <div class="flex justify-end gap-2">
-                <button type="button" id="closeModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+                <button type="button" id="closeRawMaterialsModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
                 <button type="submit" id="submitAddRawMaterials" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add</button>
             </div>
         </form>
@@ -83,11 +83,11 @@
 <script>
     $(document).ready(function(){
         $('#AddRawMaterials').on('click', function(){
-            $('#RawMaterialsModal').removeClass('hidden');
+            $('#RawMaterialsModal').fadeIn();
         });
 
-        $('#closeModal').on('click', function(){
-            $('#RawMaterialsModal').addClass('hidden');
+        $('#closeRawMaterialsModal').on('click', function(){
+            $('#RawMaterialsModal').fadeOut();
         });
 
         $('#AddRawMaterialsForm').on('submit', function(e){

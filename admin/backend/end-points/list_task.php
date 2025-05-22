@@ -22,6 +22,7 @@ if ($list_task && $list_task->num_rows > 0): ?>
 
 
         <tr class="border-b border-gray-200 hover:bg-gray-50">
+            <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($task['id_number']); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($task['task_id']); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars(ucfirst($task['fullname'])); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars(ucfirst($task['role'])); ?></td>

@@ -18,6 +18,7 @@
     <table class="min-w-full table-auto" id="weaverTable">
         <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">ID Number</th>
                 <th class="py-3 px-6 text-left">Task ID</th>
                 <th class="py-3 px-6 text-left">Member Name</th>
                 <th class="py-3 px-6 text-left">Role</th>
