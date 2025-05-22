@@ -34,11 +34,16 @@ if ($list_task && $list_task->num_rows > 0): ?>
                 <div>
                     <i class="text-sm italic text-gray-500">
                         Start: 
-                        <?php echo !empty($task['date_start']) ? htmlspecialchars($task['date_start']) : '--'; ?>
+                        <?php
+                        echo !empty($task['date_start']) ? date("F j, Y", strtotime($task['date_start'])) : '--';
+                        ?> 
                         - 
-                        <?php echo !empty($task['date_end']) ? htmlspecialchars($task['date_end']) : '--, ----'; ?>
+                        <?php
+                        echo !empty($task['date_end']) ? date("F j, Y", strtotime($task['date_end'])) : '--, ----';
+                        ?>
                     </i>
                 </div>
+
             </td>
             <td class="py-3 px-6 text-left"><?= $task['status'] ?></td>
             <td class="py-3 px-6 flex space-x-2">
@@ -93,7 +98,7 @@ if ($list_task && $list_task->num_rows > 0): ?>
                                 response.message,  // Show the success message from the response
                                 'success'
                             ).then(() => {
-                                // location.reload(); 
+                                setTimeout(function () { location.reload(); }, 1000);
                             });
                         } else {
                             Swal.fire(
