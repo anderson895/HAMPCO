@@ -40,7 +40,7 @@ include "components/header.php";
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Task ID</th>
                 <th class="py-3 px-6 text-left">Task Name</th>
-                <th class="py-3 px-6 text-left">Material</th>
+                <th class="py-3 px-6 text-left">Materials</th>
                 <th class="py-3 px-6 text-left">Category</th>
                 <th class="py-3 px-6 text-left">
                 <div>

@@ -23,7 +23,7 @@
                 <th class="py-3 px-6 text-left">Member Name</th>
                 <th class="py-3 px-6 text-left">Role</th>
                 <th class="py-3 px-6 text-left">Task Name</th>
-                <th class="py-3 px-6 text-left">Material</th>
+                <th class="py-3 px-6 text-left">Materials</th>
                 <th class="py-3 px-6 text-left">Category</th>
                 <th class="py-3 px-6 text-left">
                 <div>
