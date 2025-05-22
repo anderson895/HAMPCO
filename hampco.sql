@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2025 at 05:49 PM
+-- Generation Time: May 22, 2025 at 06:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -53,6 +53,7 @@ INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `
 
 CREATE TABLE `task` (
   `task_id` int(11) NOT NULL,
+  `task_user_id` int(11) NOT NULL,
   `task_name` varchar(60) NOT NULL,
   `task_material` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`task_material`)),
   `task_category` varchar(60) NOT NULL,
@@ -65,8 +66,9 @@ CREATE TABLE `task` (
 -- Dumping data for table `task`
 --
 
-INSERT INTO `task` (`task_id`, `task_name`, `task_material`, `task_category`, `date_start`, `date_end`, `status`) VALUES
-(2, 'mat name', '[{\"raw_id\":\"12\",\"quantity\":\"100\",\"unit\":\"gram\"},{\"raw_id\":\"10\",\"quantity\":\"10\",\"unit\":\"bundle\"}]', 'category', '2025-05-22', NULL, 'Done');
+INSERT INTO `task` (`task_id`, `task_user_id`, `task_name`, `task_material`, `task_category`, `date_start`, `date_end`, `status`) VALUES
+(6, 4, 't name', '[{\"raw_id\":\"10\",\"quantity\":\"234\",\"unit\":\"bundle\"},{\"raw_id\":\"11\",\"quantity\":\"12\",\"unit\":\"bundle\"}]', 'categoere', '2025-05-23', '2025-05-23', 'Done'),
+(7, 9, 'Melvin task', '[{\"raw_id\":\"11\",\"quantity\":\"45\",\"unit\":\"bundle\"},{\"raw_id\":\"9\",\"quantity\":\"100\",\"unit\":\"kilo\"},{\"raw_id\":\"10\",\"quantity\":\"1\",\"unit\":\"bundle\"},{\"raw_id\":\"12\",\"quantity\":\"100\",\"unit\":\"gram\"}]', 'category 1', '2025-05-23', NULL, 'On Progress');
 
 -- --------------------------------------------------------
 
@@ -114,7 +116,8 @@ CREATE TABLE `user_member` (
 
 INSERT INTO `user_member` (`id`, `id_number`, `fullname`, `email`, `phone`, `role`, `sex`, `password`, `date_created`, `status`) VALUES
 (4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-05 04:07:41', 1),
-(7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-05 04:13:48', 1);
+(7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-05 04:13:48', 1),
+(9, '1312312312', 'justin melvin', 'jmelvin@gmail.com', '098454454744', 'knotter', 'male', '$2y$10$fUOOEVyd4Fs/Culb1ln9bO.68HdtXxHmjKT8snl6EEM4spPzl4jW2', '2025-05-22 16:36:28', 1);
 
 -- --------------------------------------------------------
 
@@ -178,7 +181,7 @@ ALTER TABLE `raw_materials`
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user_admin`
@@ -190,7 +193,7 @@ ALTER TABLE `user_admin`
 -- AUTO_INCREMENT for table `user_member`
 --
 ALTER TABLE `user_member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `weaver`

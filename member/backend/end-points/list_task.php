@@ -83,13 +83,8 @@ if ($list_task && $list_task->num_rows > 0): ?>
 
         </tr>
                     <?php
-        }else{?>
-        <tr>
-            <td colspan="7" class="p-2">No record found.</td>
-        </tr>
-        <?php
-        }
-        ?>
+        }?>
+       
     <?php endwhile; ?>
 <?php else: ?>
     <tr>
