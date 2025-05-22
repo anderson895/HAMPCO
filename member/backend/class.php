@@ -66,17 +66,17 @@ class global_class extends db_connect
 
 
 
-    public function MarkAsDone($task_id, $status) {
-        $query = $this->conn->prepare("UPDATE `task` SET `status` = ? WHERE `task_id` = ?");
+    public function markAsDone($task_id, $status) {
+    $query = $this->conn->prepare("UPDATE `task` SET `status` = ?, `date_end` = NOW() WHERE `task_id` = ?");
+    $query->bind_param("si", $status, $task_id);
 
-        $query->bind_param("si", $status, $task_id);
-
-        if ($query->execute()) {
+    if ($query->execute()) {
             return 'success';
         } else {
-            return 'Error: ' . $query->error;
+            return 'Execute failed: ' . $query->error;
         }
     }
+
 
     
 

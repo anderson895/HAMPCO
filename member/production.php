@@ -338,6 +338,7 @@ $(document).ready(function () {
                     $('#otherRawMaterialsContainer').empty();
                     workCount = 1;
                     $('#progressModal').addClass('hidden');
+                    setTimeout(function () { location.reload(); }, 1000);
                 } else {
                     console.error('Error:', res.message || 'Unknown error');
                     alertify.error('Error: ' + (res.message || 'Something went wrong.'));

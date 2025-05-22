@@ -51,7 +51,7 @@ if ($list_task && $list_task->num_rows > 0): ?>
                     <button class="doneBtn bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 px-4 rounded-full text-xs flex items-center gap-2 shadow transition"
                         data-task_id='<?= $task['task_id'] ?>'>
                         <span class="material-icons text-base">check</span>
-                        Done
+                        Mark as done
                     </button>
                 <?php endif; ?>
             </td>
