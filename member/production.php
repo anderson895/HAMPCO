@@ -54,33 +54,9 @@ include "components/header.php";
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm">
-            <tr class="border-b border-gray-200 hover:bg-gray-50">
-                <td class="py-3 px-6 text-left">1</td>
-                <td class="py-3 px-6 text-left">Knotting</td>
-                <td class="py-3 px-6 text-left">Pina Liniwan</td>
-                <td class="py-3 px-6 text-left">Natural Fibers</td>
-                <td class="py-3 px-6 text-left">
-                    <div>
-                        <i class="text-sm italic text-gray-500">Start: May 18, 2025 - End: --, ----</i>
-                    </div>
-                </td>
-                <td class="py-3 px-6 text-left">On Progress</td>
-                <td class="py-3 px-6 flex space-x-2">
-                <!-- Done Button -->
-                    <button 
-                        class="declineBtn bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 px-4 rounded-full text-xs flex items-center gap-2 shadow transition"
-                    >
-                        <span class="material-icons text-base">check</span>
-                        Done
-                    </button>
-                </td>
-            </tr>
-            
-
-
-
-            
-
+            <?php 
+            include "backend/end-points/list_task.php";
+            ?>
         </tbody>
     </table>
 </div>
@@ -133,7 +109,7 @@ include "components/header.php";
         <form id="frmCreateProgress" class="space-y-4">
             <!-- Material Name -->
             <div>
-                <label for="material_name" class="block text-sm font-medium text-gray-700">Material Name</label>
+                <label for="material_name" class="block text-sm font-medium text-gray-700">Task Name</label>
                 <input type="text" id="material_name" name="material_name" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" required>
             </div>
 
@@ -333,47 +309,55 @@ $(document).ready(function () {
 
 
 
-    $('#frmCreateProgress').submit(function (event) {
-        event.preventDefault();
-        // Collect form data
-        const formData = new FormData(this);
-        formData.append('requestType', 'CreateProgress');
+   $('#frmCreateProgress').submit(function (event) {
+    event.preventDefault();
 
-        // Send data
-        $.ajax({
-            url: 'backend/end-points/controller.php',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            beforeSend: function () {
-                $('#submitAddRawMaterials').prop('disabled', true).text('Submitting...');
-            },
-            success: function (response) {
-                try {
-                    const res = JSON.parse(response);
-                    if (res.success) {
-                        alert('Progress submitted successfully!');
-                        $('#frmCreateProgress')[0].reset();
-                        $('#otherRawMaterialsContainer').empty();
-                        workCount = 1;
-                        $('#progressModal').addClass('hidden');
-                    } else {
-                        // alert('Error: ' + res.message);
-                        console.log('Error: ' + res.message);
-                    }
-                } catch (e) {
-                      console.log(response);
+    // Collect form data
+    const formData = new FormData(this);
+    formData.append('requestType', 'CreateProgress');
+
+    $.ajax({
+        url: 'backend/end-points/controller.php',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            $('#submitAddRawMaterials')
+                .prop('disabled', true)
+                .text('Submitting...');
+        },
+        success: function (response) {
+            try {
+                const res = JSON.parse(response);
+
+                // Correct condition (check for 'status' key, not 'success')
+                if (res.status === 'success') {
+                    alertify.success(res.message || 'Progress submitted successfully!');
+                    $('#frmCreateProgress')[0].reset();
+                    $('#otherRawMaterialsContainer').empty();
+                    workCount = 1;
+                    $('#progressModal').addClass('hidden');
+                } else {
+                    console.error('Error:', res.message || 'Unknown error');
+                    alertify.error('Error: ' + (res.message || 'Something went wrong.'));
                 }
-            },
-            error: function () {
-                alert('Failed to submit. Please try again.');
-            },
-            complete: function () {
-                $('#submitAddRawMaterials').prop('disabled', false).text('Create');
+            } catch (e) {
+                console.error('Invalid JSON:', response);
             }
-        });
+        },
+        error: function (xhr, status, error) {
+            alert('Failed to submit. Please try again.');
+            console.error('AJAX error:', status, error);
+        },
+        complete: function () {
+            $('#submitAddRawMaterials')
+                .prop('disabled', false)
+                .text('Create');
+        }
     });
+});
+
 });
 </script>
 

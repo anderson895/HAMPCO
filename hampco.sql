@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2025 at 06:39 AM
+-- Generation Time: May 22, 2025 at 05:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,23 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `hampco`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `materials`
---
-
-CREATE TABLE `materials` (
-  `id` int(11) NOT NULL,
-  `material_name` varchar(60) NOT NULL,
-  `material_category` varchar(60) NOT NULL,
-  `material_raw_used` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `material_status` varchar(60) NOT NULL,
-  `material_date_added` datetime DEFAULT NULL,
-  `material_last_update` datetime DEFAULT NULL,
-  `material_member_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -61,6 +44,29 @@ INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `
 (10, 'pina loose liniwan', '', '13 bundle', 'Available'),
 (11, 'abaca loose', '', '46 bundle', 'Available'),
 (12, 'silk 21d', '', '86,676 gram', 'Available');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task`
+--
+
+CREATE TABLE `task` (
+  `task_id` int(11) NOT NULL,
+  `task_name` varchar(60) NOT NULL,
+  `task_material` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`task_material`)),
+  `task_category` varchar(60) NOT NULL,
+  `date_start` date NOT NULL,
+  `date_end` date DEFAULT NULL,
+  `status` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO `task` (`task_id`, `task_name`, `task_material`, `task_category`, `date_start`, `date_end`, `status`) VALUES
+(2, 'mat name', '[{\"raw_id\":\"12\",\"quantity\":\"100\",\"unit\":\"gram\"},{\"raw_id\":\"10\",\"quantity\":\"10\",\"unit\":\"bundle\"}]', 'category', '2025-05-22', NULL, 'Done');
 
 -- --------------------------------------------------------
 
@@ -129,16 +135,16 @@ CREATE TABLE `weaver` (
 --
 
 --
--- Indexes for table `materials`
---
-ALTER TABLE `materials`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `task`
+--
+ALTER TABLE `task`
+  ADD PRIMARY KEY (`task_id`);
 
 --
 -- Indexes for table `user_admin`
@@ -163,16 +169,16 @@ ALTER TABLE `weaver`
 --
 
 --
--- AUTO_INCREMENT for table `materials`
---
-ALTER TABLE `materials`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `task`
+--
+ALTER TABLE `task`
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_admin`
