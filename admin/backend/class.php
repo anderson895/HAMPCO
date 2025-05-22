@@ -12,6 +12,44 @@ class global_class extends db_connect
         $this->connect();
     }
 
+     public function get_list_task()
+    {
+        $stmt = $this->conn->prepare("SELECT 
+        task.task_id,
+        task.task_user_id,
+        task.task_name,
+        task.task_material,
+        task.task_category,
+        task.date_start,
+        task.date_end,
+        task.status as task_status,
+        user_member.id as user_id,
+        user_member.fullname,
+        user_member.role,
+        user_member.id_number
+        FROM task
+        LEFT JOIN user_member
+        ON user_member.id = task.task_user_id
+        ");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $stmt->close();
+        return $result;
+    }
+
+
+    public function get_raw_materials_details($id)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM raw_materials WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();  
+        $stmt->close();
+        return $data;
+    }
+
 
 
     public function delete_raw_material($id)

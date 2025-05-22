@@ -59,7 +59,7 @@ class global_class extends db_connect
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_assoc();  // fetch one row as assoc array
+        $data = $result->fetch_assoc();  
         $stmt->close();
         return $data;
     }
