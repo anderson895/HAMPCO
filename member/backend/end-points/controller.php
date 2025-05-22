@@ -9,6 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['requestType'])) {
         if ($_POST['requestType'] == 'CreateProgress') {
 
+            session_start();
+            
+            $user_id=$_SESSION['id'];
+
             $data = $_POST;
             $material_name = $data['material_name'] ?? '';
             $material_category = $data['material_category'] ?? '';
@@ -31,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Convert to JSON string for DB insertion if needed
                 $raw_materials_json = json_encode($raw_materials_details);
 
-                $result = $db->CreateTask($material_name, $material_category, $rm_status, $raw_materials_json);
+                $result = $db->CreateTask($user_id,$material_name, $material_category, $rm_status, $raw_materials_json);
 
                 if ($result === true) {
                     echo json_encode([

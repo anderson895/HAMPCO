@@ -19,21 +19,22 @@ class global_class extends db_connect
 
 
 
-     public function CreateTask($material_name, $material_category, $rm_status, $raw_materials_details)
-    {
-        $query = $this->conn->prepare("
-            INSERT INTO `task` 
-                (`task_name`, `task_material`, `task_category`, `date_start`, `status`) 
-            VALUES (?, ?, ?, NOW(), ?)
-        ");
-        $query->bind_param("ssss", $material_name, $raw_materials_details, $material_category, $rm_status);
-
-        $result = $query->execute();
-        $query->close();
-
-        return $result;
-    }
+    public function CreateTask($user_id, $material_name, $material_category, $rm_status, $raw_materials_json)
+{
+    $query = $this->conn->prepare("
+        INSERT INTO `task` 
+            (`task_user_id`, `task_name`, `task_material`, `task_category`, `date_start`, `status`) 
+        VALUES (?, ?, ?, ?, NOW(), ?)
+    ");
     
+    // Corrected variable name
+    $query->bind_param("issss", $user_id, $material_name, $raw_materials_json, $material_category, $rm_status);
+
+    $result = $query->execute();
+    $query->close();
+
+    return $result;
+}
 
 
 

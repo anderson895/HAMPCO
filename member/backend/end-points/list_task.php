@@ -1,9 +1,28 @@
 <?php 
 
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
+
+
+
+$user_id=$_SESSION['id'];
+
 $list_task = $db->get_list_task();
+
+
+
 
 if ($list_task && $list_task->num_rows > 0): ?>
     <?php while ($task = $list_task->fetch_assoc()): ?>
+
+
+        <?php
+        if($user_id==$task['task_user_id']){    
+        ?>
+
+
+
 
         <tr class="border-b border-gray-200 hover:bg-gray-50">
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($task['task_id']); ?></td>
@@ -27,6 +46,7 @@ if ($list_task && $list_task->num_rows > 0): ?>
                 } else {
                     echo "--";
                 }
+            
                 ?>
             </td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($task['task_category']); ?></td>
@@ -62,7 +82,14 @@ if ($list_task && $list_task->num_rows > 0): ?>
             </td>
 
         </tr>
-
+                    <?php
+        }else{?>
+        <tr>
+            <td colspan="7" class="p-2">No record found.</td>
+        </tr>
+        <?php
+        }
+        ?>
     <?php endwhile; ?>
 <?php else: ?>
     <tr>
