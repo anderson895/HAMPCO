@@ -23,7 +23,7 @@ include "components/header.php";
 
    <button id="createProgressBtn" class="mb-3 bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition flex items-center gap-2">
         <span class="material-icons">add</span>
-        Create Progress
+        ADD TASK
     </button>
 
 
@@ -38,35 +38,44 @@ include "components/header.php";
     <table class="min-w-full table-auto" id="weaverTable">
         <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                <th class="py-3 px-6 text-left">Category</th>
+                <th class="py-3 px-6 text-left">Task ID</th>
+                <th class="py-3 px-6 text-left">Task Name</th>
                 <th class="py-3 px-6 text-left">Material</th>
+                <th class="py-3 px-6 text-left">Category</th>
+                <th class="py-3 px-6 text-left">
+                <div>
+                    Production Date<br>
+                    <i class="text-sm italic text-gray-500">Start Date - End - Date</i>
+                </div>
+                </th>
+
                 <th class="py-3 px-6 text-left">Status</th>
                 <th class="py-3 px-6 text-left">Action</th>
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm">
             <tr class="border-b border-gray-200 hover:bg-gray-50">
-                <td class="py-3 px-6 text-left">Raw Materials</td>
+                <td class="py-3 px-6 text-left">1</td>
+                <td class="py-3 px-6 text-left">Knotting</td>
+                <td class="py-3 px-6 text-left">Pina Liniwan</td>
                 <td class="py-3 px-6 text-left">Natural Fibers</td>
+                <td class="py-3 px-6 text-left">
+                    <div>
+                        <i class="text-sm italic text-gray-500">Start: May 18, 2025 - End: --, ----</i>
+                    </div>
+                </td>
                 <td class="py-3 px-6 text-left">On Progress</td>
                 <td class="py-3 px-6 flex space-x-2">
-                <!-- View Details Button -->
-                <button 
-                    class="verifyBtn bg-indigo-500 hover:bg-indigo-600 text-white py-1.5 px-4 rounded-full text-xs flex items-center gap-2 shadow transition"
-                >
-                    <span class="material-icons text-base">info</span>
-                    View Details
-                </button>
-
                 <!-- Done Button -->
-                <button 
-                    class="declineBtn bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 px-4 rounded-full text-xs flex items-center gap-2 shadow transition"
-                >
-                    <span class="material-icons text-base">check</span>
-                    Done
-                </button>
+                    <button 
+                        class="declineBtn bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 px-4 rounded-full text-xs flex items-center gap-2 shadow transition"
+                    >
+                        <span class="material-icons text-base">check</span>
+                        Done
+                    </button>
                 </td>
             </tr>
+            
 
 
 
@@ -119,7 +128,7 @@ include "components/header.php";
 <div id="progressModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
 <div class="bg-white rounded-lg p-6 w-full max-w-3xl shadow-xl">
 
-        <h2 class="text-xl font-semibold mb-4">Create Progress</h2>
+        <h2 class="text-xl font-semibold mb-4">+ ADD TASK</h2>
 
         <form id="frmCreateProgress" class="space-y-4">
             <!-- Material Name -->
@@ -157,6 +166,7 @@ include "components/header.php";
                                 class="w-full mt-1 px-4 py-2 pr-16 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" 
                                 required>
                         <span class="quantity-unit-label absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"></span>
+                        <input hidden type="text" class="unit_value" name="unit_value[]">
                         </div>
                     </div>
                 </div>
@@ -223,7 +233,7 @@ $(document).ready(function () {
     });
 
     // Trigger update when any dropdown changes
-    $(document).on('change', '.raw-used-select', function () {
+   $(document).on('change', '.raw-used-select', function () {
         updateDisabledOptions();
 
         // Get selected option's unit
@@ -232,12 +242,22 @@ $(document).ready(function () {
         const unitParts = fullUnit.toString().split(' ');
         const shortUnit = unitParts[unitParts.length - 1] || '—';
 
+        // Find the current raw material row
+        const rawMaterialRow = $(this).closest('.grid');
+
         // Update corresponding unit label
-        const unitLabel = $(this).closest('.grid').find('span.quantity-unit-label');
+        const unitLabel = rawMaterialRow.find('span.quantity-unit-label');
         if (unitLabel.length) {
             unitLabel.text(shortUnit);
         }
+
+        // Set the corresponding hidden unit_value input
+        const unitValueInput = rawMaterialRow.find('input.unit_value');
+        if (unitValueInput.length) {
+            unitValueInput.val(shortUnit);
+        }
     });
+
 });
 
 let workCount = 1;
@@ -264,6 +284,7 @@ function addOtherWorkMaterials() {
                             class="w-full mt-1 px-4 py-2 pr-16 border border-gray-300 rounded-lg focus:ring-green-500 focus:outline-none" 
                             required>
                         <span class="quantity-unit-label absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"></span>
+                        <input hidden type="text" class="unit_value" name="unit_value[]">
                     </div>
                 </div>
             </div>
@@ -309,9 +330,11 @@ $(document).ready(function () {
         $('#progressModal').addClass('hidden');
     });
 
+
+
+
     $('#frmCreateProgress').submit(function (event) {
         event.preventDefault();
-
         // Collect form data
         const formData = new FormData(this);
         formData.append('requestType', 'CreateProgress');
@@ -336,10 +359,11 @@ $(document).ready(function () {
                         workCount = 1;
                         $('#progressModal').addClass('hidden');
                     } else {
-                        alert('Error: ' + res.message);
+                        // alert('Error: ' + res.message);
+                        console.log('Error: ' + res.message);
                     }
                 } catch (e) {
-                    alert('Unexpected response: ' + response);
+                      console.log(response);
                 }
             },
             error: function () {
