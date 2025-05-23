@@ -35,7 +35,7 @@ include "components/header.php";
         <input type="text" id="searchInput" placeholder="Search ..." class="w-64 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
     </div>
 
-    <table class="min-w-full table-auto" id="weaverTable">
+    <table class="min-w-full table-auto" id="taskTable">
         <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Task ID</th>
@@ -392,7 +392,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $("#searchInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $("#weaverTable tbody tr").filter(function() {
+        $("#taskTable tbody tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });

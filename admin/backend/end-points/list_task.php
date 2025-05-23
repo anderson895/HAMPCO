@@ -53,7 +53,6 @@ if ($list_task && $list_task->num_rows > 0): ?>
             <td class="py-3 px-6 text-left">
                 <div>
                     <i class="text-sm italic text-gray-500">
-                        Start: 
                         <?php
                         echo !empty($task['date_start']) ? date("F j, Y", strtotime($task['date_start'])) : '--';
                         ?> 

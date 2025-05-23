@@ -35,6 +35,26 @@ if ($fetch_all_materials->num_rows > 0) {
                 data-rm_name="<?php echo htmlspecialchars($row['rm_name']); ?>">
                 <span class="material-icons text-sm mr-1">delete</span> Remove
             </button>
+
+
+           <!-- Stock In Button -->
+            <button 
+                class="stockInRmBtn bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
+                data-id="<?php echo htmlspecialchars($row['rmid']); ?>" 
+                data-rm_name="<?php echo htmlspecialchars($row['rm_name']); ?>">
+                <span class="material-icons text-sm mr-1">arrow_upward</span> Stock In
+            </button>
+
+            <!-- Stock Out Button -->
+            <button 
+                class="stockOPutRmBtn bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
+                data-id="<?php echo htmlspecialchars($row['rmid']); ?>" 
+                data-rm_name="<?php echo htmlspecialchars($row['rm_name']); ?>">
+                 <span class="material-icons text-sm mr-1">arrow_downward</span>
+                 Stock Out
+            </button>
+
+
         </td>
     </tr>
 <?php
