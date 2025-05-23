@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2025 at 06:40 PM
+-- Generation Time: May 23, 2025 at 06:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,10 +40,35 @@ CREATE TABLE `raw_materials` (
 --
 
 INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `rm_status`) VALUES
-(9, 'silk lambo', '', '900 kilo', 'Available'),
-(10, 'pina loose liniwan', '', '13 bundle', 'Available'),
-(11, 'abaca loose', '', '46 bundle', 'Available'),
-(12, 'silk 21d', '', '86,676 gram', 'Available');
+(9, 'silk lambo', '', '790 kilo', 'Available'),
+(10, 'pina loose liniwan', '', '8 bundle', 'Available'),
+(11, 'abaca loose', '', '45 bundle', 'Available'),
+(12, 'silk 21d', '', '86670 gram', 'Available'),
+(13, 'fiver', 'dawdawd', '100000 kg', 'Available');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_history`
+--
+
+CREATE TABLE `stock_history` (
+  `stock_id` int(11) NOT NULL,
+  `stock_raw_id` int(11) NOT NULL,
+  `stock_user_id` int(11) NOT NULL,
+  `stock_type` varchar(60) NOT NULL,
+  `stock_outQty` int(11) NOT NULL,
+  `stock_changes` text NOT NULL,
+  `stock_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stock_history`
+--
+
+INSERT INTO `stock_history` (`stock_id`, `stock_raw_id`, `stock_user_id`, `stock_type`, `stock_outQty`, `stock_changes`, `stock_date`) VALUES
+(7, 13, 4, 'StockOut', 1, '100001 -> 100000', '2025-05-23 03:59:37'),
+(8, 9, 4, 'StockOut', 10, '800 -> 790', '2025-05-23 03:59:37');
 
 -- --------------------------------------------------------
 
@@ -67,8 +92,7 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`task_id`, `task_user_id`, `task_name`, `task_material`, `task_category`, `date_start`, `date_end`, `status`) VALUES
-(6, 4, 't name', '[{\"raw_id\":\"10\",\"quantity\":\"234\",\"unit\":\"bundle\"},{\"raw_id\":\"11\",\"quantity\":\"12\",\"unit\":\"bundle\"}]', 'categoere', '2025-05-23', '2025-05-23', 'Done'),
-(7, 9, 'Melvin task', '[{\"raw_id\":\"11\",\"quantity\":\"45\",\"unit\":\"bundle\"},{\"raw_id\":\"9\",\"quantity\":\"100\",\"unit\":\"kilo\"},{\"raw_id\":\"10\",\"quantity\":\"1\",\"unit\":\"bundle\"},{\"raw_id\":\"12\",\"quantity\":\"100\",\"unit\":\"gram\"}]', 'category 1', '2025-05-23', NULL, 'On Progress');
+(13, 4, 'j task', '[{\"raw_id\":13,\"quantity\":1,\"unit\":\"kg\"},{\"raw_id\":9,\"quantity\":10,\"unit\":\"kilo\"}]', 'j cat', '2025-05-23', NULL, 'On Progress');
 
 -- --------------------------------------------------------
 
@@ -144,6 +168,12 @@ ALTER TABLE `raw_materials`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stock_history`
+--
+ALTER TABLE `stock_history`
+  ADD PRIMARY KEY (`stock_id`);
+
+--
 -- Indexes for table `task`
 --
 ALTER TABLE `task`
@@ -175,13 +205,19 @@ ALTER TABLE `weaver`
 -- AUTO_INCREMENT for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `stock_history`
+--
+ALTER TABLE `stock_history`
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user_admin`

@@ -9,52 +9,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['requestType'])) {
         if ($_POST['requestType'] == 'CreateProgress') {
 
-            session_start();
-            
-            $user_id=$_SESSION['id'];
+                session_start();
 
-            $data = $_POST;
-            $material_name = $data['material_name'] ?? '';
-            $material_category = $data['material_category'] ?? '';
-            $rm_status = $data['rm_status'] ?? '';
+                $user_id = $_SESSION['id'] ?? null;
 
-            $raw_used = $data['raw_used'] ?? [];
-            $raw_qty = $data['raw_qty'] ?? [];
-            $unit_value = $data['unit_value'] ?? [];
-
-            $raw_materials_details = [];
-            // Check if arrays are aligned
-            if (count($raw_used) === count($raw_qty) && count($raw_qty) === count($unit_value)) {
-                for ($i = 0; $i < count($raw_used); $i++) {
-                    $raw_materials_details[] = [
-                        'raw_id' => $raw_used[$i],
-                        'quantity' => $raw_qty[$i],
-                        'unit' => $unit_value[$i],
-                    ];
-                }
-                // Convert to JSON string for DB insertion if needed
-                $raw_materials_json = json_encode($raw_materials_details);
-
-                $result = $db->CreateTask($user_id,$material_name, $material_category, $rm_status, $raw_materials_json);
-
-                if ($result === true) {
+                if (!$user_id) {
                     echo json_encode([
-                        'status' => 'success',
-                        'message' => 'Task created successfully!'
+                        'status' => 'error',
+                        'message' => 'User not authenticated.'
                     ]);
+                    exit;
+                }
+
+                $data = $_POST;
+                $material_name = trim($data['material_name'] ?? '');
+                $material_category = trim($data['material_category'] ?? '');
+                $rm_status = trim($data['rm_status'] ?? '');
+
+                $raw_used = $data['raw_used'] ?? [];
+                $raw_qty = $data['raw_qty'] ?? [];
+                $unit_value = $data['unit_value'] ?? [];
+
+                $raw_materials_details = [];
+
+                if (count($raw_used) === count($raw_qty) && count($raw_qty) === count($unit_value)) {
+                    $all_stock_out_success = true;
+
+                    for ($i = 0; $i < count($raw_used); $i++) {
+                        $raw_id = intval($raw_used[$i]);
+                        $qty = floatval($raw_qty[$i]);
+                        $unit = trim($unit_value[$i]);
+
+                        $raw_materials_details[] = [
+                            'raw_id' => $raw_id,
+                            'quantity' => $qty,
+                            'unit' => $unit,
+                        ];
+
+                        // Perform stock out
+                        $stockOutResult = $db->StockOut($user_id, $raw_id, $qty);
+
+                        if (!$stockOutResult) {
+                            $all_stock_out_success = false;
+                            break;
+                        }
+                    }
+
+                    if ($all_stock_out_success) {
+                        $raw_materials_json = json_encode($raw_materials_details);
+                        $createResult = $db->CreateTask($user_id, $material_name, $material_category, $rm_status, $raw_materials_json);
+
+                        if ($createResult === true) {
+                            echo json_encode([
+                                'status' => 'success',
+                                'message' => 'Task created successfully!'
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 'error',
+                                'message' => 'Failed to create task.'
+                            ]);
+                        }
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => 'Stock out failed for one or more items.'
+                        ]);
+                    }
                 } else {
                     echo json_encode([
                         'status' => 'error',
-                        'message' => 'Failed to create task.'
+                        'message' => 'Mismatched raw material data.'
                     ]);
                 }
-            } else {
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Mismatched raw material data.'
-                ]);
-            }
-
         } else if ($_POST['requestType'] == 'MarkAsDone') {
 
                 $task_id = $_POST['task_id'];

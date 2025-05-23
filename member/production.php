@@ -312,52 +312,74 @@ $(document).ready(function () {
    $('#frmCreateProgress').submit(function (event) {
     event.preventDefault();
 
-    // Collect form data
+    let isValid = true;
+
+    $('.previous-work-entry').each(function () {
+        const rawQtyInput = $(this).find('input[name="raw_qty[]"]');
+        const rawQty = parseFloat(rawQtyInput.val());
+
+        const selectedOption = $(this).find('.raw-used-select option:selected');
+        const dataUnit = selectedOption.data('unit') || '';
+
+        // Extract numeric part from "5 kg" → 5
+        const maxQtyMatch = dataUnit.toString().match(/[\d.]+/);
+        const maxQty = maxQtyMatch ? parseFloat(maxQtyMatch[0]) : 0;
+
+        if (rawQty > maxQty) {
+            isValid = false;
+            alertify.error(`Quantity used (${rawQty}) exceeds available quantity (${maxQty}) for ${selectedOption.text()}`);
+            rawQtyInput.focus();
+            return false; // exit each loop early
+        }
+    });
+
+    if (!isValid) return; // stop form submission
+
+    // Proceed with form submission if all quantities are valid
     const formData = new FormData(this);
     formData.append('requestType', 'CreateProgress');
 
-    $.ajax({
-        url: 'backend/end-points/controller.php',
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        beforeSend: function () {
-            $('#submitAddRawMaterials')
-                .prop('disabled', true)
-                .text('Submitting...');
-        },
-        success: function (response) {
-            try {
-                const res = JSON.parse(response);
-
-                // Correct condition (check for 'status' key, not 'success')
-                if (res.status === 'success') {
-                    alertify.success(res.message || 'Progress submitted successfully!');
-                    $('#frmCreateProgress')[0].reset();
-                    $('#otherRawMaterialsContainer').empty();
-                    workCount = 1;
-                    $('#progressModal').addClass('hidden');
-                    setTimeout(function () { location.reload(); }, 1000);
-                } else {
-                    console.error('Error:', res.message || 'Unknown error');
-                    alertify.error('Error: ' + (res.message || 'Something went wrong.'));
+        $.ajax({
+            url: 'backend/end-points/controller.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                $('#submitAddRawMaterials')
+                    .prop('disabled', true)
+                    .text('Submitting...');
+            },
+            success: function (response) {
+                try {
+                    const res = JSON.parse(response);
+                    
+                    if (res.status === 'success') {
+                        alertify.success(res.message || 'Progress submitted successfully!');
+                        $('#frmCreateProgress')[0].reset();
+                        $('#otherRawMaterialsContainer').empty();
+                        workCount = 1;
+                        $('#progressModal').addClass('hidden');
+                        setTimeout(function () { location.reload(); }, 1000);
+                    } else {
+                        console.error('Error:', res.message || 'Unknown error');
+                        alertify.error('Error: ' + (res.message || 'Something went wrong.'));
+                    }
+                } catch (e) {
+                    console.error('Invalid JSON:', response);
                 }
-            } catch (e) {
-                console.error('Invalid JSON:', response);
+            },
+            error: function (xhr, status, error) {
+                alert('Failed to submit. Please try again.');
+                console.error('AJAX error:', status, error);
+            },
+            complete: function () {
+                $('#submitAddRawMaterials')
+                    .prop('disabled', false)
+                    .text('Create');
             }
-        },
-        error: function (xhr, status, error) {
-            alert('Failed to submit. Please try again.');
-            console.error('AJAX error:', status, error);
-        },
-        complete: function () {
-            $('#submitAddRawMaterials')
-                .prop('disabled', false)
-                .text('Create');
-        }
+        });
     });
-});
 
 });
 </script>
