@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2025 at 06:00 AM
+-- Generation Time: May 23, 2025 at 07:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,11 +40,11 @@ CREATE TABLE `raw_materials` (
 --
 
 INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `rm_status`) VALUES
-(9, 'silk lambo', '', '790 kilo', 'Available'),
-(10, 'pina loose liniwan', '', '8 bundle', 'Available'),
-(11, 'abaca loose', '', '45 bundle', 'Available'),
+(9, 'silk lambo', '', '792 kilo', 'Available'),
+(10, 'pina loose liniwan', '', '65 bundle', 'Available'),
+(11, 'abaca loose', '', '56 bundle', 'Available'),
 (12, 'silk 21d', '', '86670 gram', 'Available'),
-(13, 'fiver', 'dawdawd', '100000 kg', 'Available');
+(13, 'fiver', 'dawdawd', '100004 kg', 'Available');
 
 -- --------------------------------------------------------
 
@@ -54,6 +54,7 @@ INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `
 
 CREATE TABLE `stock_history` (
   `stock_id` int(11) NOT NULL,
+  `stock_user_type` varchar(60) NOT NULL,
   `stock_raw_id` int(11) NOT NULL,
   `stock_user_id` int(11) NOT NULL,
   `stock_type` varchar(60) NOT NULL,
@@ -66,9 +67,26 @@ CREATE TABLE `stock_history` (
 -- Dumping data for table `stock_history`
 --
 
-INSERT INTO `stock_history` (`stock_id`, `stock_raw_id`, `stock_user_id`, `stock_type`, `stock_outQty`, `stock_changes`, `stock_date`) VALUES
-(7, 13, 4, 'StockOut', 1, '100001 -> 100000', '2025-05-23 03:59:37'),
-(8, 9, 4, 'StockOut', 10, '800 -> 790', '2025-05-23 03:59:37');
+INSERT INTO `stock_history` (`stock_id`, `stock_user_type`, `stock_raw_id`, `stock_user_id`, `stock_type`, `stock_outQty`, `stock_changes`, `stock_date`) VALUES
+(12, 'Administrator', 9, 1, 'Stock In', 10, '800 -> 810', '2025-05-23 05:09:17'),
+(13, 'member', 9, 4, 'Stock Out', 20, '810 -> 790', '2025-05-23 05:21:02'),
+(14, 'member', 10, 4, 'Stock Out', 10, '10 -> 0', '2025-05-23 05:21:02'),
+(15, 'Administrator', 10, 1, 'Stock In', 50, '0 -> 50', '2025-05-23 05:24:17'),
+(16, 'Administrator', 10, 1, 'Stock In', 1, '50 -> 51', '2025-05-23 05:25:39'),
+(17, 'Administrator', 10, 1, 'Stock In', 2, '51 -> 53', '2025-05-23 05:26:55'),
+(18, 'Administrator', 11, 1, 'Stock In', 1, '50 -> 51', '2025-05-23 05:27:49'),
+(19, 'Administrator', 10, 1, 'Stock In', 1, '53 -> 54', '2025-05-23 05:30:16'),
+(20, 'Administrator', 10, 1, 'Stock In', 1, '54 -> 55', '2025-05-23 05:32:45'),
+(21, 'Administrator', 10, 1, 'Stock In', 5, '55 -> 60', '2025-05-23 05:35:12'),
+(22, 'Administrator', 9, 1, 'Stock In', 1, '790 -> 791', '2025-05-23 05:35:43'),
+(23, 'Administrator', 13, 1, 'Stock In', 1, '100000 -> 100001', '2025-05-23 05:36:31'),
+(24, 'Administrator', 11, 1, 'Stock In', 2, '51 -> 53', '2025-05-23 05:38:09'),
+(25, 'Administrator', 13, 1, 'Stock In', 3, '100001 -> 100004', '2025-05-23 05:38:46'),
+(26, 'Administrator', 11, 1, 'Stock In', 1, '53 -> 54', '2025-05-23 05:41:45'),
+(27, 'Administrator', 9, 1, 'Stock In', 1, '791 -> 792', '2025-05-23 05:42:34'),
+(28, 'Administrator', 10, 1, 'Stock In', 3, '60 -> 63', '2025-05-23 05:44:18'),
+(29, 'Administrator', 10, 1, 'Stock In', 2, '63 -> 65', '2025-05-23 05:45:24'),
+(30, 'Administrator', 11, 1, 'Stock In', 2, '54 -> 56', '2025-05-23 05:48:15');
 
 -- --------------------------------------------------------
 
@@ -92,7 +110,7 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`task_id`, `task_user_id`, `task_name`, `task_material`, `task_category`, `date_start`, `date_end`, `status`) VALUES
-(13, 4, 'j task', '[{\"raw_id\":13,\"quantity\":1,\"unit\":\"kg\"},{\"raw_id\":9,\"quantity\":10,\"unit\":\"kilo\"}]', 'j cat', '2025-05-23', NULL, 'On Progress');
+(14, 4, 'j task', '[{\"raw_id\":9,\"quantity\":20,\"unit\":\"kilo\"},{\"raw_id\":10,\"quantity\":10,\"unit\":\"bundle\"}]', 'j cat', '2025-05-23', NULL, 'On Progress');
 
 -- --------------------------------------------------------
 
@@ -171,7 +189,9 @@ ALTER TABLE `raw_materials`
 -- Indexes for table `stock_history`
 --
 ALTER TABLE `stock_history`
-  ADD PRIMARY KEY (`stock_id`);
+  ADD PRIMARY KEY (`stock_id`),
+  ADD KEY `stock_raw_id` (`stock_raw_id`),
+  ADD KEY `stock_user_id` (`stock_user_id`);
 
 --
 -- Indexes for table `task`
@@ -211,13 +231,13 @@ ALTER TABLE `raw_materials`
 -- AUTO_INCREMENT for table `stock_history`
 --
 ALTER TABLE `stock_history`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `user_admin`
