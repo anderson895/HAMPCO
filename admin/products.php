@@ -29,7 +29,11 @@
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm">
-           <?php include "backend/end-points/list_raw_material.php";?>
+           <?php
+           
+        //    include "backend/end-points/list_products.php";
+           
+           ?>
         </tbody>
     </table>
 </div>
