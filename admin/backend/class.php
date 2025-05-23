@@ -15,30 +15,37 @@ class global_class extends db_connect
 
      public function list_stock_logs()
     {
-        $stmt = $this->conn->prepare("SELECT 
-        stock_history.stock_id,
-        stock_history.stock_type,
-        stock_history.stock_outQty,
-        stock_history.stock_changes,
-        stock_history.stock_date,
-        raw_materials.id as raw_id,
-        raw_materials.rm_name,
-        user_member.id as user_id,
-        user_member.fullname,
-        user_member.role,
-        user_member.id_number
-        FROM stock_history
-        LEFT JOIN user_member
-        ON user_member.id = stock_history.stock_user_id 
-        LEFT JOIN raw_materials
-        ON raw_materials.id = stock_history.stock_raw_id  
+        $stmt = $this->conn->prepare("
+            SELECT 
+                stock_history.stock_id,
+                stock_history.stock_type,
+                stock_history.stock_outQty,
+                stock_history.stock_changes,
+                stock_history.stock_date,
+                stock_history.stock_user_type,
+                raw_materials.id AS raw_id,
+                raw_materials.rm_name,
+                COALESCE(user_admin.id, user_member.id) AS user_id,
+                COALESCE(user_admin.fullname, user_member.fullname) AS fullname,
+                COALESCE('Administrator') AS role
+            FROM stock_history
+            LEFT JOIN user_admin
+                ON stock_history.stock_user_type = 'Administrator'
+                AND user_admin.id = stock_history.stock_user_id
+            LEFT JOIN user_member
+                ON stock_history.stock_user_type = 'member'
+                AND user_member.id = stock_history.stock_user_id
+            LEFT JOIN raw_materials
+                ON raw_materials.id = stock_history.stock_raw_id
+            ORDER BY `stock_id` DESC
         ");
+
         $stmt->execute();
         $result = $stmt->get_result();
-
         $stmt->close();
         return $result;
     }
+
 
 
      public function get_list_task()
@@ -113,7 +120,55 @@ class global_class extends db_connect
     
         return $result;
     }
-    
+
+
+
+
+    public function RawStockin($user_id, $raw_id, $stock_in_qty)
+    {
+       // Step 1: Get current rm_quantity
+        $query = $this->conn->prepare("SELECT rm_quantity FROM raw_materials WHERE id = ?");
+        $query->bind_param("i", $raw_id);
+        $query->execute();
+        $query->bind_result($current_rm_quantity);
+        $query->fetch();
+        $query->close();
+
+        // Step 2: Split numeric value and unit
+        if (preg_match('/^([\d,\.]+)\s*(\w+)$/', $current_rm_quantity, $matches)) {
+            $current_qty = floatval(str_replace(',', '', $matches[1])); // Remove commas
+            $unit = $matches[2];
+        } else {
+            return false; // Unexpected format
+        }
+
+        // Step 3: Subtract quantity
+        $new_qty = $current_qty + $stock_in_qty;
+        if ($new_qty < 0) {
+            return false; // Prevent negative stock
+        }
+
+        $new_rm_quantity = $new_qty . ' ' . $unit;
+
+        // Step 4: Update rm_quantity
+        $updateQty = $this->conn->prepare("UPDATE raw_materials SET rm_quantity = ? WHERE id = ?");
+        $updateQty->bind_param("si", $new_rm_quantity, $raw_id);
+        $resultQty = $updateQty->execute();
+        $updateQty->close();
+
+        if (!$resultQty) {
+            return false;
+        }
+
+        $change_log = "$current_qty -> $new_qty";
+        $insertLog = $this->conn->prepare("INSERT INTO stock_history (stock_raw_id,stock_user_type, stock_type,stock_outQty, stock_changes, stock_user_id) VALUES (?,'Administrator', 'Stock In',?, ?, ?)");
+        $insertLog->bind_param("iisi", $raw_id,$stock_in_qty, $change_log, $user_id);
+        $resultLog = $insertLog->execute();
+        $insertLog->close();
+
+        return $resultLog;
+    }
+
 
     public function AddRawMaterials($rm_name, $rm_description, $rm_qty, $rm_status)
     {

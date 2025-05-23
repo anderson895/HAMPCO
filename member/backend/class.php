@@ -50,7 +50,7 @@ public function StockOut($user_id, $raw_used, $raw_qty)
     }
 
     $change_log = "$current_qty -> $new_qty";
-    $insertLog = $this->conn->prepare("INSERT INTO stock_history (stock_raw_id, stock_type,stock_outQty, stock_changes, stock_user_id) VALUES (?, 'StockOut',?, ?, ?)");
+    $insertLog = $this->conn->prepare("INSERT INTO stock_history (stock_raw_id,stock_user_type, stock_type,stock_outQty, stock_changes, stock_user_id) VALUES (?,'member', 'Stock Out',?, ?, ?)");
     $insertLog->bind_param("iisi", $raw_used,$raw_qty, $change_log, $user_id);
     $resultLog = $insertLog->execute();
     $insertLog->close();

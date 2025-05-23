@@ -21,6 +21,7 @@ if ($list_stock_logs && $list_stock_logs->num_rows > 0): ?>
         <tr class="border-b border-gray-200 hover:bg-gray-50">
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars(ucfirst($logs['rm_name'])); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars(ucfirst($logs['fullname'])); ?></td>
+            <td class="py-3 px-6 text-left"><?php echo htmlspecialchars(ucfirst($logs['stock_user_type'])); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($logs['stock_type']); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($logs['stock_outQty']); ?></td>
             <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($logs['stock_changes']); ?></td>

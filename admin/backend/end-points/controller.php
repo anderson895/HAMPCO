@@ -55,16 +55,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['rmid'];
             $name = $_POST['rm_name'];
             $desc = $_POST['rm_description'];
-            $qty = $_POST['rm_quantity']; // Make sure this matches your form input
+            $qty = $_POST['rm_quantity']; 
             $status = $_POST['rm_status'];
         
-            // Call your updated function with all fields
             $result = $db->update_raw_material($id, $name, $desc, $qty, $status);
         
             echo json_encode([
                 "status" => $result ? "success" : "error",
                 "message" => $result ? "Material updated successfully." : "Update failed."
             ]);
+        }else if ($_POST['requestType'] == 'RawStockin') {
+
+            session_start();
+
+            $user_id = $_SESSION['id'];
+            $raw_id = $_POST['raw_id'];
+            $stock_in_qty = $_POST['rm_quantity'];
+            $result = $db->RawStockin($user_id, $raw_id, $stock_in_qty);
+            echo json_encode([
+                "status" => $result ? "success" : "error",
+                "message" => $result ? "Material updated successfully." : "Update failed."
+            ]);
+
+            
         }else if ($_POST['requestType'] == 'deleteRawMaterial') {
             $id = $_POST['rmid'];
             // Your DB delete logic here
