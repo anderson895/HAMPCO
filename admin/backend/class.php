@@ -12,6 +12,35 @@ class global_class extends db_connect
         $this->connect();
     }
 
+
+     public function list_stock_logs()
+    {
+        $stmt = $this->conn->prepare("SELECT 
+        stock_history.stock_id,
+        stock_history.stock_type,
+        stock_history.stock_outQty,
+        stock_history.stock_changes,
+        stock_history.stock_date,
+        raw_materials.id as raw_id,
+        raw_materials.rm_name,
+        user_member.id as user_id,
+        user_member.fullname,
+        user_member.role,
+        user_member.id_number
+        FROM stock_history
+        LEFT JOIN user_member
+        ON user_member.id = stock_history.stock_user_id 
+        LEFT JOIN raw_materials
+        ON raw_materials.id = stock_history.stock_raw_id  
+        ");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $stmt->close();
+        return $result;
+    }
+
+
      public function get_list_task()
     {
         $stmt = $this->conn->prepare("SELECT 
