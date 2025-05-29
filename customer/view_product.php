@@ -20,7 +20,7 @@ endforeach;
     <!-- Breadcrumbs -->
     <div class="text-gray-500 text-sm mb-4">
         <a href="#" class="hover:underline">Home</a> &gt;
-        <a href="#" class="hover:underline"></a> &gt;
+        <a href="#" class="hover:underline"></a> 
         <a href="#" class="hover:underline"><?=$product['prod_name']?></a>
     </div>
 
