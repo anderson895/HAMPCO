@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 08:47 AM
+-- Generation Time: May 29, 2025 at 09:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,13 +38,6 @@ CREATE TABLE `product` (
   `prod_status` int(11) NOT NULL DEFAULT 1 COMMENT '0=archived,1=exist'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`prod_id`, `prod_category_id`, `prod_name`, `prod_image`, `prod_stocks`, `prod_price`, `prod_description`, `prod_status`) VALUES
-(1, 2, 'awd', 'product_6837faf39f5963.25294803.webp', 0, 223.00, 'sefse', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -62,8 +55,9 @@ CREATE TABLE `product_category` (
 --
 
 INSERT INTO `product_category` (`category_id`, `category_name`, `category_description`) VALUES
-(1, 'Linawan', 'Handmade'),
-(2, 'Fiver', 'Handmade');
+(1, 'Linawan', NULL),
+(2, 'Pina fiber', NULL),
+(3, 'Bastos', NULL);
 
 -- --------------------------------------------------------
 
@@ -224,7 +218,7 @@ CREATE TABLE `user_member` (
 
 INSERT INTO `user_member` (`id`, `id_number`, `fullname`, `email`, `phone`, `role`, `sex`, `password`, `date_created`, `status`) VALUES
 (4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-05 04:07:41', 1),
-(7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-05 04:13:48', 1),
+(7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-29 06:51:36', 0),
 (9, '1312312312', 'justin melvin', 'jmelvin@gmail.com', '098454454744', 'knotter', 'male', '$2y$10$fUOOEVyd4Fs/Culb1ln9bO.68HdtXxHmjKT8snl6EEM4spPzl4jW2', '2025-05-22 16:36:28', 1);
 
 -- --------------------------------------------------------
@@ -309,13 +303,13 @@ ALTER TABLE `weaver`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_category`
 --
 ALTER TABLE `product_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `raw_materials`
