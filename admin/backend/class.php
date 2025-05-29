@@ -123,8 +123,7 @@ class global_class extends db_connect
 
 
 
-
-    public function RawStockin($user_id, $raw_id, $stock_in_qty)
+public function RawStockin($user_id, $raw_id, $stock_in_qty)
     {
        // Step 1: Get current rm_quantity
         $query = $this->conn->prepare("SELECT rm_quantity FROM raw_materials WHERE id = ?");
@@ -168,6 +167,46 @@ class global_class extends db_connect
 
         return $resultLog;
     }
+
+
+
+
+   public function ProdStockin($user_id, $prod_id, $stock_in_qty)
+{
+    // Step 1: Get current prod_stocks
+    $query = $this->conn->prepare("SELECT prod_stocks FROM product WHERE prod_id = ?");
+    $query->bind_param("i", $prod_id);
+    $query->execute();
+    $query->bind_result($current_qty);
+    $query->fetch();
+    $query->close();
+
+    // Step 2: Add stock_in_qty to current quantity
+    $new_qty = $current_qty + $stock_in_qty;
+    if ($new_qty < 0) {
+        return false; 
+    }
+
+    // Step 3: Update the product stock
+    $updateQty = $this->conn->prepare("UPDATE product SET prod_stocks = ? WHERE prod_id = ?");
+    $updateQty->bind_param("ii", $new_qty, $prod_id);
+    $resultQty = $updateQty->execute();
+    $updateQty->close();
+
+    // Step 4: Insert into product_stock log
+    $change_log = "$current_qty -> $new_qty";
+    $insertLog = $this->conn->prepare("INSERT INTO product_stock(pstock_user_id, pstock_prod_id, pstock_stock_type, pstock_stock_outQty, pstock_stock_changes) VALUES (?, ?, 'Stock In', ?, ?)");
+    $insertLog->bind_param("iiis", $user_id, $prod_id, $stock_in_qty, $change_log);
+    $resultLog = $insertLog->execute();
+    $insertLog->close();
+
+    return $resultLog;
+}
+
+
+
+
+
 
 
     public function AddRawMaterials($rm_name, $rm_description, $rm_qty, $rm_status)

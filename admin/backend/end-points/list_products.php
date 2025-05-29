@@ -47,7 +47,7 @@ if ($fetch_all_materials->num_rows > 0) {
 } else {
 ?>
     <tr>
-        <td colspan="8" class="py-3 px-6 text-center">No raw materials found.</td>
+        <td colspan="8" class="py-3 px-6 text-center">No Product found.</td>
     </tr>
 <?php
 }
@@ -119,6 +119,43 @@ if ($fetch_all_materials->num_rows > 0) {
 
 
 
+<!-- Modal Structure -->
+<div id="stockInRmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 " style="display:none;">
+    <div class="relative bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto">
+        <!-- Spinner -->
+        <div id="spinner" class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center rounded-2xl z-50 " style="display:none;">
+            <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+
+        <h2 id="modalTitle" class="text-2xl font-bold text-gray-800 mb-6 text-center">Stock In</h2>
+
+        <form id="frmProdStockin" method="POST" class="space-y-4">
+            <div>
+                <label for="rm_quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                <input 
+                    type="number" 
+                    name="rm_quantity" 
+                    id="rm_quantity" 
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    placeholder="Enter quantity"
+                    required
+                >
+                <input hidden type="text" id="prod_id" name="prod_id">
+            </div>
+
+            <div class="flex justify-end pt-4 space-x-3">
+                <button type="button" class="closeStockInRmModal px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                    Cancel
+                </button>
+                <button id="btnProdStockin" type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
 <script>
 $(document).ready(function () {
@@ -142,12 +179,12 @@ $(document).ready(function () {
                     url: "backend/end-points/controller.php",
                     type: 'POST',
                     data: { prod_id: prod_id, requestType: 'DeleteProduct' },
-                    dataType: 'json',  // Expect a JSON response
+                    dataType: 'json', 
                     success: function(response) {
                         if (response.status === 200) {
                             Swal.fire(
                                 'Deleted!',
-                                response.message,  // Show the success message from the response
+                                response.message,
                                 'success'
                             ).then(() => {
                                  location.reload(); 
@@ -155,7 +192,7 @@ $(document).ready(function () {
                         } else {
                             Swal.fire(
                                 'Error!',
-                                response.message,  // Show the error message from the response
+                                response.message, 
                                 'error'
                             );
                         }
@@ -178,7 +215,7 @@ $(document).ready(function () {
         selectedId = $(this).data('id');
         console.log(selectedId);
         
-        $("#raw_id").val(selectedId);
+        $("#prod_id").val(selectedId);
         $('#stockInRmModal').fadeIn();
     });
 
@@ -191,14 +228,14 @@ $(document).ready(function () {
     
 
 
-    $("#frmRawStockin").submit(function (e) {
+    $("#frmProdStockin").submit(function (e) {
             e.preventDefault();
 
             $('.spinner').show();
             $('#btnRawStockin').prop('disabled', true);
         
             var formData = new FormData(this); 
-            formData.append('requestType', 'RawStockin');
+            formData.append('requestType', 'ProdStockin');
             $.ajax({
                 type: "POST",
                 url: "backend/end-points/controller.php",
@@ -207,7 +244,7 @@ $(document).ready(function () {
                 processData: false,
                 dataType: "json", 
                 beforeSend: function () {
-                    $("#btnRawStockin").prop("disabled", true).text("Processing...");
+                    $("#btnProdStockin").prop("disabled", true).text("Processing...");
                 },
                 success: function (response) {
                     console.log(response); 
@@ -217,12 +254,12 @@ $(document).ready(function () {
                         setTimeout(function () { location.reload(); }, 1000);
                     } else {
                         $('.spinner').hide();
-                        $('#btnRawStockin').prop('disabled', false);
+                        $('#btnProdStockin').prop('disabled', false);
                         alertify.error(response.message);
                     }
                 },
                 complete: function () {
-                    $("#btnRawStockin").prop("disabled", false).text("Submit");
+                    $("#btnProdStockin").prop("disabled", false).text("Submit");
                 }
             });
         });
@@ -238,7 +275,7 @@ $(document).ready(function () {
         const price = $(this).data('price');
         const categoryId = $(this).data('category-id');
 
-        $('#modalTitle').text('Update Raw Material');
+        $('#modalTitle').text('Update Product Details');
         $('#rmid').val(id);
         $('#rm_name').val(name);
         $('#rm_description').val(description);
@@ -266,12 +303,9 @@ $(document).ready(function () {
               alertify.error("Please select a category.");
               return; 
           }
-        
            
           $('.spinner').show();
           $('#frmUpdateProduct').prop('disabled', true);
-  
-          // Create a new FormData object
           var formData = new FormData(this);
           formData.append('requestType', 'UpdateProduct'); 
   

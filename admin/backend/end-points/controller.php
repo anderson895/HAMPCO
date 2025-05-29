@@ -78,6 +78,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             
+        }else if ($_POST['requestType'] == 'ProdStockin') {
+
+            session_start();
+
+            $user_id = $_SESSION['id'];
+            $prod_id = $_POST['prod_id'];
+            $stock_in_qty = $_POST['rm_quantity'];
+            $result = $db->ProdStockin($user_id, $prod_id, $stock_in_qty);
+            echo json_encode([
+                "status" => $result ? "success" : "error",
+                "message" => $result ? "Product updated successfully." : "Update failed."
+            ]);
+
+            
         }else if ($_POST['requestType'] == 'deleteRawMaterial') {
             $id = $_POST['rmid'];
             // Your DB delete logic here
