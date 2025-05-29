@@ -226,5 +226,32 @@ $firstname = $name_parts[0];
         }
     });
 
-    
+
+
+const getOrdersCount = () => {
+    $.ajax({
+      url: 'backend/end-points/get_count_status.php', 
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+       console.log(response); 
+        let cartCount = response.cartCount;
+        
+        if (cartCount && cartCount > 0) {
+            $('.cartCount').text(cartCount).show(); 
+            // wishlistCount
+        } else {
+            $('.cartCount').hide();
+        }
+      },
+    });
+};
+
+
+getOrdersCount();
+
+  setInterval(() => {
+    getOrdersCount();
+  }, 1000)
+
 </script>

@@ -24,8 +24,68 @@ $userID = $_SESSION['customer_id'];
   </div>
 </div>
 
+
+
 <script>
-$(document).ready(function () {
+
+// Increase quantity
+$('.cart-items').on('click', 'button:contains("+")', function () {
+  const cartItem = $(this).closest('[data-cart-id]');
+  const cartId = cartItem.data('cart-id');
+
+  // Get current qty and stock
+  const qtyInput = cartItem.find('input[type="text"]');
+  const currentQty = parseInt(qtyInput.val());
+  const stockLimit = parseInt(qtyInput.data('stock'));
+
+  if (currentQty >= stockLimit) {
+    alertify.error('You have reached the maximum available stock for this item.');
+    return; // stop incrementing
+  }
+
+  $.ajax({
+    url: 'backend/end-points/controller.php',
+    type: 'POST',
+    data: { cart_id: cartId, requestType: 'IncreaseQty' },
+    success: function(response) {
+      loadCart();
+    },
+    error: function() {
+      alert('Failed to update quantity. Please try again.');
+    }
+  });
+});
+
+
+// Decrease quantity
+$('.cart-items').on('click', 'button:contains("−")', function () {
+  const cartItem = $(this).closest('[data-cart-id]');
+  const cartId = cartItem.data('cart-id');
+
+  $.ajax({
+    url: 'backend/end-points/controller.php',
+    type: 'POST',
+    data: { cart_id: cartId, requestType: 'DecreaseQty' },
+    success: function(response) {
+      loadCart();
+    },
+    error: function() {
+      alert('Failed to update quantity. Please try again.');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+function loadCart() {
   $.ajax({
     url: "backend/end-points/get_cart.php",
     type: 'GET',
@@ -51,7 +111,7 @@ $(document).ready(function () {
         total += itemTotal;
 
         cartContainer.append(`
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between border rounded-lg p-4 shadow-sm hover:shadow-md transition duration-200 bg-white">
+          <div data-cart-id="${item.cart_id}" class="flex flex-col sm:flex-row sm:items-center justify-between border rounded-lg p-4 shadow-sm hover:shadow-md transition duration-200 bg-white">
             <div class="flex items-center gap-4 flex-1">
               <img src="../upload/${item.prod_image}" alt="${item.prod_name}" class="w-24 h-24 rounded-md object-cover border" />
               <div>
@@ -62,12 +122,22 @@ $(document).ready(function () {
             <div class="mt-4 sm:mt-0 flex items-center gap-6">
               <div class="flex items-center border rounded-md overflow-hidden">
                 <button class="px-3 py-1 text-gray-600 hover:bg-gray-100 transition duration-150">−</button>
-                <input type="text" value="${qty}" class="w-12 text-center border-x outline-none bg-gray-50" readonly />
+                <input 
+                type="text" 
+                value="${qty}" 
+                data-stock="${item.prod_stocks}" 
+                class="w-12 text-center border-x outline-none bg-gray-50" 
+                readonly 
+                />
+
                 <button class="px-3 py-1 text-gray-600 hover:bg-gray-100 transition duration-150">+</button>
               </div>
               <div class="text-right min-w-[100px]">
                 <p class="text-lg font-bold text-gray-700">₱ ${itemTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
               </div>
+              <button class="remove-item-btn text-red-600 hover:text-red-800 ml-4 font-semibold" title="Remove item">
+                &times;
+              </button>
             </div>
           </div>
         `);
@@ -79,6 +149,32 @@ $(document).ready(function () {
       console.error('AJAX error:', error);
       $('.cart-items').html('<p class="text-red-600 text-center">Failed to load cart items. Please try again.</p>');
     }
+  });
+}
+
+$(document).ready(function () {
+  loadCart();
+
+  // Delegate event to dynamically added remove buttons
+  $('.cart-items').on('click', '.remove-item-btn', function () {
+    const cartItem = $(this).closest('[data-cart-id]');
+    const cartId = cartItem.data('cart-id');
+
+    if (!confirm('Are you sure you want to remove this item from your cart?')) {
+      return;
+    }
+
+    $.ajax({
+      url: 'backend/end-points/controller.php',
+      type: 'POST',
+      data: { cart_id: cartId,requestType:'RemoveCart' },
+      success: function(response) {
+        loadCart(); 
+      },
+      error: function(xhr, status, error) {
+        alert('Failed to remove item. Please try again.');
+      }
+    });
   });
 });
 </script>

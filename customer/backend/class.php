@@ -122,6 +122,81 @@ public function getCartlist($userID)
 
 
 
+ public function getOrderStatusCounts($userID)
+    {
+        $query = " 
+            SELECT 
+                (SELECT COUNT(*) FROM `cart` WHERE cart_user_id = $userID) AS cartCount
+        ";
+
+        $result = $this->conn->query($query);
+        
+        if ($result) {
+            $row = $result->fetch_assoc();
+            
+            echo json_encode($row);
+        } else {
+            echo json_encode(['error' => 'Failed to retrieve counts']);
+        }
+    }
+
+
+
+
+
+public function IncreaseQty($cart_id)
+{
+    $stmt = $this->conn->prepare("UPDATE cart SET cart_Qty = cart_Qty + 1 WHERE cart_id = ?");
+    $stmt->bind_param("i", $cart_id);
+
+    if ($stmt->execute()) {
+        return 'Quantity increased';
+    } else {
+        return 400;
+    }
+}
+
+public function DecreaseQty($cart_id)
+{
+    // Decrease only if quantity > 1 to avoid zero or negative qty
+    $stmt = $this->conn->prepare("UPDATE cart SET cart_Qty = cart_Qty - 1 WHERE cart_id = ? AND cart_Qty > 1");
+    $stmt->bind_param("i", $cart_id);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            return 'Quantity decreased';
+        } else {
+            return 'Minimum quantity reached';
+        }
+    } else {
+        return 400;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+public function RemoveCart($cart_id)
+{
+    // Prepare DELETE query to remove the cart item with the given cart_id
+    $query = "DELETE FROM `cart` WHERE `cart_id` = '$cart_id'";
+
+    if ($this->conn->query($query)) {
+        return 'Item removed from cart!';
+    } else {
+        return 400; 
+    }
+}
+
+
+
 
 
 
