@@ -16,7 +16,7 @@
             $prod_price = $product['prod_price'];
     ?>
         <!-- Product Card -->
-        <div class="bg-white p-4 rounded shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl product-card" data-category-id="<?=$product['prod_category_id']?>" data-price="<?=$product['prod_currprice']?>">
+        <div class="bg-white p-4 rounded shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl product-card" data-category-id="<?=$product['prod_category_id']?>" data-price="<?=$product['prod_price']?>">
             <a href="view_product.php?product_id=<?=$product['prod_id']?>">
 
                 <!-- Product Image -->
@@ -45,23 +45,76 @@
 
 
 <script>
-    $(document).ready(function() {
-    // Bind the keyup event on the search input field
+$(document).ready(function() {
     $('#search').on('keyup', function() {
-        var searchTerm = $(this).val().toLowerCase(); // Get the value of the search field
-
-        // Loop through the product cards and show/hide based on the search term
+        var searchTerm = $(this).val().toLowerCase();
         $('#product-grid .product-card').each(function() {
-            var productName = $(this).find('.product-name').text().toLowerCase(); // Get the product name text
-
-            // If the product name contains the search term, show the product card
+            var productName = $(this).find('.product-name').text().toLowerCase(); 
             if (productName.indexOf(searchTerm) !== -1) {
-                $(this).show(); // Show matching product
+                $(this).show(); 
             } else {
-                $(this).hide(); // Hide non-matching product
+                $(this).hide(); 
             }
         });
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to filter products by category and price
+function applyFilters() {
+    const selectedCategory = document.querySelector('.category-filter.active')?.getAttribute('data-category-id') || 'all';
+    const selectedPriceRange = document.querySelector('.price-filter:checked')?.getAttribute('data-price-range') || 'all';
+    const productCards = document.querySelectorAll('.product-card');
+
+    productCards.forEach(card => {
+        const categoryId = card.getAttribute('data-category-id');
+        const productPrice = parseFloat(card.getAttribute('data-price'));
+
+        let categoryMatch = (selectedCategory === 'all' || categoryId === selectedCategory);
+        let priceMatch = false;
+
+        if (selectedPriceRange !== 'all') {
+            const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
+            priceMatch = (productPrice >= minPrice && productPrice <= maxPrice);
+        } else {
+            priceMatch = true;
+        }
+
+        if (categoryMatch && priceMatch) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+const categoryLinks = document.querySelectorAll('.category-filter');
+categoryLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        categoryLinks.forEach(link => link.classList.remove('active'));
+        link.classList.add('active');
+        applyFilters();
+    });
+});
+
+const priceFilters = document.querySelectorAll('.price-filter');
+priceFilters.forEach(radio => {
+    radio.addEventListener('change', () => {
+        applyFilters();
+    });
+});
+applyFilters();    
 });
 
 </script>

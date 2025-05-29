@@ -214,6 +214,73 @@ class global_class extends db_connect
     }
     
 
+    public function fetch_all_category(){
+            $query = $this->conn->prepare("SELECT * FROM `product_category`");
+
+            if ($query->execute()) {
+                $result = $query->get_result();
+                return $result;
+            }
+        }
+
+
+
+
+
+  public function fetch_all_product(){
+        $query = $this->conn->prepare("SELECT * 
+        FROM `product` 
+        LEFT JOIN product_category
+        ON product.prod_category_id = product_category.category_id
+        where prod_status='1'
+        ");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+
+
+
+
+
+ public function addProduct(
+    $product_Name,
+    $product_Price,
+    $product_Category,
+    $product_Description,
+    $uniqueFileName
+) {
+    $query = "INSERT INTO `product` 
+              (`prod_name`, `prod_price`, `prod_category_id`, `prod_description`, `prod_image`) 
+              VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $this->conn->prepare($query);
+    if (!$stmt) {
+        return false; // Prepare failed
+    }
+
+    $stmt->bind_param("sdiss", 
+        $product_Name, 
+        $product_Price, 
+        $product_Category, 
+        $product_Description, 
+        $uniqueFileName
+    );
+
+    if ($stmt->execute()) {
+        $prod_id = $stmt->insert_id;
+        $stmt->close();
+        return $prod_id;
+    } else {
+        $stmt->close();
+        return false;
+    }
+}
+
+
+
 
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 06:21 AM
+-- Generation Time: May 29, 2025 at 08:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,50 @@ SET time_zone = "+00:00";
 --
 -- Database: `hampco`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `prod_id` int(11) NOT NULL,
+  `prod_category_id` int(11) NOT NULL,
+  `prod_name` varchar(255) NOT NULL,
+  `prod_image` varchar(255) NOT NULL,
+  `prod_stocks` int(11) NOT NULL,
+  `prod_price` decimal(10,2) NOT NULL,
+  `prod_description` text DEFAULT NULL,
+  `prod_status` int(11) NOT NULL DEFAULT 1 COMMENT '0=archived,1=exist'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`prod_id`, `prod_category_id`, `prod_name`, `prod_image`, `prod_stocks`, `prod_price`, `prod_description`, `prod_status`) VALUES
+(1, 2, 'awd', 'product_6837faf39f5963.25294803.webp', 0, 223.00, 'sefse', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_category`
+--
+
+CREATE TABLE `product_category` (
+  `category_id` int(11) NOT NULL,
+  `category_name` varchar(60) NOT NULL,
+  `category_description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_category`
+--
+
+INSERT INTO `product_category` (`category_id`, `category_name`, `category_description`) VALUES
+(1, 'Linawan', 'Handmade'),
+(2, 'Fiver', 'Handmade');
 
 -- --------------------------------------------------------
 
@@ -202,6 +246,18 @@ CREATE TABLE `weaver` (
 --
 
 --
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`prod_id`);
+
+--
+-- Indexes for table `product_category`
+--
+ALTER TABLE `product_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- Indexes for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
@@ -248,6 +304,18 @@ ALTER TABLE `weaver`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `product_category`
+--
+ALTER TABLE `product_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `raw_materials`

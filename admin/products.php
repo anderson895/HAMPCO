@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<button id="AddRawMaterials" class="mb-3 bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition flex items-center gap-2">
+<button id="AddProduct" class="mb-3 bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition flex items-center gap-2">
         <span class="material-icons">add</span>
         Add Products
     </button>
@@ -21,17 +21,20 @@
     <table class="min-w-full table-auto" id="productionTable">
         <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                <th class="py-3 px-6 text-left">Raw Materials</th>
+                <th class="py-3 px-6 text-left">Image</th>
+                <th class="py-3 px-6 text-left">Product ID</th>
+                <th class="py-3 px-6 text-left">Product Name</th>
+                <th class="py-3 px-6 text-left">Stocks</th>
+                <th class="py-3 px-6 text-left">Price</th>
+                <th class="py-3 px-6 text-left">Category</th>
                 <th class="py-3 px-6 text-left">Description</th>
-                <th class="py-3 px-6 text-left">Quantity</th>
-                <th class="py-3 px-6 text-left">Status</th>
-                <th class="py-3 px-6 text-left">Action</th>
+                <th class="py-3 px-6 text-center">Actions</th>
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm">
            <?php
            
-        //    include "backend/end-points/list_products.php";
+           include "backend/end-points/list_products.php";
            
            ?>
         </tbody>
@@ -48,10 +51,10 @@
 
 
 <!-- Modal -->
-<div id="RawMaterialsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center " style="display:none;">
+<div id="ProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center " style="display:none;">
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 class="text-xl font-semibold mb-4">Add Raw Materials</h2>
-        <form id="AddRawMaterialsForm">
+        <h2 class="text-xl font-semibold mb-4">Add Product</h2>
+        <form id="AddProductForm">
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">Name</label>
                 <input type="text" name="rm_name" class="w-full border rounded p-2" placeholder="" required>
@@ -61,51 +64,64 @@
                 <input type="text" name="rm_description" id="rm_description" class="w-full border rounded p-2" placeholder="" required>
             </div>
             <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Quantity</label>
-                <input type="text" name="rm_qty" id="rm_qty" class="w-full border rounded p-2" placeholder="" required>
-            </div>
-           
-            <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Status</label>
-                <select name="rm_status" id="rm_status" class="w-full border rounded p-2" required>
-                    <option value="" disabled selected>Select status</option>
-                    <option value="Available">Available</option>
-                    <option value="Not Available">Not Available</option>
-                </select>
+                <label class="block text-sm font-medium mb-1">Price</label>
+                <input type="text" name="rm_price" id="rm_price" class="w-full border rounded p-2" placeholder="" required>
             </div>
 
+
+             <div class="mb-4">
+                    <label for="productCategory" class="block text-sm font-medium text-gray-700">Choose a Category</label>
+                    <select id="productCategory" name="rm_product_Category" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <option value="" disabled selected>Select a Category</option>
+                        <?php $fetch_all_category = $db->fetch_all_category();
+                            if ($fetch_all_category): 
+                                foreach ($fetch_all_category as $category): ?>
+                                    <option value="<?=$category['category_id']?>"><?=$category['category_name']?></option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="" disabled>No record found.</option>
+                            <?php endif; ?>
+                    </select>
+                </div>
+           
+           
+            <div class="mb-4">
+                <label for="productImage" class="block text-gray-700">Product Image</label>
+                <input type="file" id="productImage" name="rm_product_image" class="w-full p-2 border border-gray-300 rounded-md" accept="image/*" required>
+            </div>
 
 
             <div class="flex justify-end gap-2">
-                <button type="button" id="closeRawMaterialsModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+                <button type="button" id="closeAddProductModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
                 <button type="submit" id="submitAddRawMaterials" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add</button>
             </div>
         </form>
     </div>
 </div>
 
+
 <script>
     $(document).ready(function(){
-        $('#AddRawMaterials').on('click', function(){
-            $('#RawMaterialsModal').fadeIn();
+        $('#AddProduct').on('click', function(){
+            $('#ProductModal').fadeIn();
         });
 
-        $('#closeRawMaterialsModal').on('click', function(){
-            $('#RawMaterialsModal').fadeOut();
+        $('#closeAddProductModal').on('click', function(){
+            $('#ProductModal').fadeOut();
         });
 
-        $('#AddRawMaterialsForm').on('submit', function(e){
+        $('#AddProductForm').on('submit', function(e){
             e.preventDefault();
-           // All validations passed
-            var formData = $(this).serializeArray(); 
-            formData.push({ name: 'requestType', value: 'AddRawMaterials' });
-            var serializedData = $.param(formData);
 
+            var formData = new FormData(this);
+            formData.append('requestType', 'AddProduct');
             $.ajax({
                 type: "POST",
                 url: "backend/end-points/controller.php",
-                data: serializedData,
-                dataType: "json", 
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
                 success: function (response) {
                     if (response.status === 'success') {
                         alertify.success(response.message);  
@@ -119,6 +135,58 @@
                 }
             });
         });
+
+
+
+
+
+
+
+
+
+        $(document).ready(function() {
+                $('#frmAddProduct').on('submit', function(e) {
+                    e.preventDefault();
+                    var category = $('#productCategory').val();
+                    if (category === null) {
+                        alert("Please select a category.");
+                        return; 
+                    }
+                    var productImage = $('#productImage').val();
+                    if (productImage === "") {
+                        alert("Please upload an image.");
+                        return; 
+                    }
+                    $('.spinner').show();
+                    $('#frmAddProduct').prop('disabled', true);
+                    var formData = new FormData(this);
+                    formData.append('requestType', 'AddProduct'); 
+                    $.ajax({
+                        type: "POST",
+                        url: "backend/end-points/controller.php",
+                        data: formData,
+                        contentType: false,
+                        processData: false, 
+                        success: function(response) {
+                            console.log(response)
+                            if(response==200){
+                                $('#AddproductModal').hide();
+                                $('.spinner').hide();
+                                $('#frmAddProduct').prop('disabled', false);
+                                location.reload();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error: ' + error);
+                        }
+                    });
+                });
+            });
+
+
+
+
+
     });
 </script>
 

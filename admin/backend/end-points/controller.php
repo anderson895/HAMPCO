@@ -87,6 +87,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "status" => $result ? "success" : "error",
                 "message" => $result ? "Material deleted successfully." : "Delete failed."
             ]);
+        }else if ($_POST['requestType'] == 'AddProduct') {
+
+
+                // echo "<pre>";
+                // print_r($_FILES);
+                // echo "</pre>";
+
+                $product_Name = $_POST['rm_name'];
+                $product_Price = $_POST['rm_price'];
+                
+                $product_Description = $_POST['rm_description'];
+                $product_Category = $_POST['rm_product_Category'];
+                $product_Image = $_FILES['rm_product_image'];
+
+
+               
+                
+                if ($product_Image['error'] === UPLOAD_ERR_OK) {
+
+                    $uploadDir = '../../../upload/';
+                    $fileExtension = pathinfo($product_Image['name'], PATHINFO_EXTENSION);
+                    $uniqueFileName = uniqid('product_', true) . '.' . $fileExtension;
+                    $uploadFilePath = $uploadDir . $uniqueFileName;
+
+                    if (move_uploaded_file($product_Image['tmp_name'], $uploadFilePath)) {
+                            $prod_id = $db->addProduct(
+                            $product_Name,
+                            $product_Price,
+                            $product_Category,
+                            $product_Description,
+                            $uniqueFileName
+                        );
+                
+                
+                        echo 200;
+                      
+                    } else {
+                        echo 'Error uploading image. Please try again.';
+                    }
+                } else {
+                    echo 'No image uploaded or there was an error with the image.';
+                }
+        
+
+        
         } else{
             echo 'requestType NOT FOUND';
         }
