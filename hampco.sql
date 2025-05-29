@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 04:11 PM
+-- Generation Time: May 29, 2025 at 04:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,8 +39,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `cart_user_id`, `cart_prod_id`, `cart_Qty`) VALUES
-(1, 6, 7, 5),
-(2, 6, 8, 1);
+(4, 6, 8, 12),
+(5, 6, 7, 5);
 
 -- --------------------------------------------------------
 
@@ -64,8 +64,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`prod_id`, `prod_category_id`, `prod_name`, `prod_image`, `prod_stocks`, `prod_price`, `prod_description`, `prod_status`) VALUES
-(7, 1, 'Plain and design', 'product_683851b61f1762.82027357.jpg', 100, 4680.00, 'Piña Seda Dyed 36”W', 1),
-(8, 2, 'Barong tagalog', 'product_6838526ad1dff7.75750727.jpg', 100, 999.00, '', 1);
+(7, 1, 'Plain and design', 'product_683851b61f1762.82027357.jpg', 5, 4680.00, 'Piña Seda Dyed 36”W', 1),
+(8, 2, 'Barong tagalog', 'product_6838526ad1dff7.75750727.jpg', 12, 999.00, '', 1);
 
 -- --------------------------------------------------------
 
@@ -350,7 +350,7 @@ ALTER TABLE `weaver`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product`
