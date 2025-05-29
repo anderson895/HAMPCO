@@ -11,6 +11,40 @@ class global_class extends db_connect
 
 
 
+
+
+public function getCartlist($userID)
+    {
+        // Directly insert the userID into the query (no prepared statements)
+        $query = "SELECT cart.*,product.*
+            FROM `cart`
+            LEFT JOIN product ON cart.cart_prod_id = product.prod_id
+            WHERE cart.cart_user_id = '$userID'
+            GROUP BY cart.cart_id, product.prod_id;
+            ";
+    
+        $result = $this->conn->query($query);
+        
+        if ($result) {
+            $cartItems = [];
+            while ($row = $result->fetch_assoc()) {
+                $cartItems[] = $row;
+            }
+            return $cartItems;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
       public function check_account($user_id ) {
         $user_id  = intval($user_id);
         $query = "SELECT * FROM user_customer WHERE customer_id  = $user_id";
@@ -52,7 +86,6 @@ class global_class extends db_connect
 
  public function AddToCart($userId, $productId)
 {
-    // Escaping user input to prevent SQL injection
     $userId = mysqli_real_escape_string($this->conn, $userId);
     $productId = mysqli_real_escape_string($this->conn, $productId);
 
