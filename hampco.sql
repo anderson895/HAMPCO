@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 02:55 PM
+-- Generation Time: May 29, 2025 at 02:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,8 +43,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`prod_id`, `prod_category_id`, `prod_name`, `prod_image`, `prod_stocks`, `prod_price`, `prod_description`, `prod_status`) VALUES
-(7, 1, 'Plain and design', 'product_683851b61f1762.82027357.jpg', 10, 4680.00, 'Piña Seda Dyed 36”W', 1),
-(8, 2, 'Barong tagalog', 'product_6838526ad1dff7.75750727.jpg', 60, 999.00, '', 1);
+(7, 1, 'Plain and design', 'product_683851b61f1762.82027357.jpg', 100, 4680.00, 'Piña Seda Dyed 36”W', 1),
+(8, 2, 'Barong tagalog', 'product_6838526ad1dff7.75750727.jpg', 100, 999.00, '', 1);
 
 -- --------------------------------------------------------
 
@@ -88,8 +88,8 @@ CREATE TABLE `product_stock` (
 --
 
 INSERT INTO `product_stock` (`pstock_id`, `pstock_user_id`, `pstock_prod_id`, `pstock_stock_type`, `pstock_stock_outQty`, `pstock_stock_changes`, `pstock_stock_date`) VALUES
-(1, 1, '8', 'Stock In', 5, '55 -> 60', '2025-05-29 12:53:16'),
-(2, 1, '7', 'Stock In', 10, '0 -> 10', '2025-05-29 12:53:32');
+(3, 1, '7', 'Stock In', 100, '0 -> 100', '2025-05-29 12:57:07'),
+(4, 1, '8', 'Stock In', 100, '0 -> 100', '2025-05-29 12:57:17');
 
 -- --------------------------------------------------------
 
@@ -335,7 +335,7 @@ ALTER TABLE `product_category`
 -- AUTO_INCREMENT for table `product_stock`
 --
 ALTER TABLE `product_stock`
-  MODIFY `pstock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pstock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `raw_materials`
