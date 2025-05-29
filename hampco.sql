@@ -1,0 +1,385 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: May 29, 2025 at 02:55 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `hampco`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `prod_id` int(11) NOT NULL,
+  `prod_category_id` int(11) NOT NULL,
+  `prod_name` varchar(255) NOT NULL,
+  `prod_image` varchar(255) NOT NULL,
+  `prod_stocks` int(11) NOT NULL,
+  `prod_price` decimal(10,2) NOT NULL,
+  `prod_description` text DEFAULT NULL,
+  `prod_status` int(11) NOT NULL DEFAULT 1 COMMENT '0=archived,1=exist'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`prod_id`, `prod_category_id`, `prod_name`, `prod_image`, `prod_stocks`, `prod_price`, `prod_description`, `prod_status`) VALUES
+(7, 1, 'Plain and design', 'product_683851b61f1762.82027357.jpg', 10, 4680.00, 'Piña Seda Dyed 36”W', 1),
+(8, 2, 'Barong tagalog', 'product_6838526ad1dff7.75750727.jpg', 60, 999.00, '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_category`
+--
+
+CREATE TABLE `product_category` (
+  `category_id` int(11) NOT NULL,
+  `category_name` varchar(60) NOT NULL,
+  `category_description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_category`
+--
+
+INSERT INTO `product_category` (`category_id`, `category_name`, `category_description`) VALUES
+(1, 'Linawan', NULL),
+(2, 'Pina fiber', NULL),
+(3, 'Bastos', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_stock`
+--
+
+CREATE TABLE `product_stock` (
+  `pstock_id` int(11) NOT NULL,
+  `pstock_user_id` int(11) NOT NULL,
+  `pstock_prod_id` varchar(60) NOT NULL,
+  `pstock_stock_type` varchar(60) NOT NULL,
+  `pstock_stock_outQty` int(11) NOT NULL,
+  `pstock_stock_changes` text NOT NULL,
+  `pstock_stock_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_stock`
+--
+
+INSERT INTO `product_stock` (`pstock_id`, `pstock_user_id`, `pstock_prod_id`, `pstock_stock_type`, `pstock_stock_outQty`, `pstock_stock_changes`, `pstock_stock_date`) VALUES
+(1, 1, '8', 'Stock In', 5, '55 -> 60', '2025-05-29 12:53:16'),
+(2, 1, '7', 'Stock In', 10, '0 -> 10', '2025-05-29 12:53:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `raw_materials`
+--
+
+CREATE TABLE `raw_materials` (
+  `id` int(11) NOT NULL,
+  `rm_name` varchar(60) NOT NULL,
+  `rm_description` text DEFAULT NULL,
+  `rm_quantity` varchar(255) NOT NULL,
+  `rm_status` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `raw_materials`
+--
+
+INSERT INTO `raw_materials` (`id`, `rm_name`, `rm_description`, `rm_quantity`, `rm_status`) VALUES
+(9, 'silk lambo', '', '802 kilo', 'Available'),
+(10, 'pina loose liniwan', '', '65 bundle', 'Available'),
+(11, 'abaca loose', '', '56 bundle', 'Available'),
+(12, 'silk 21d', '', '86670 gram', 'Available'),
+(13, 'fiver', 'dawdawd', '100004 kg', 'Available');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_history`
+--
+
+CREATE TABLE `stock_history` (
+  `stock_id` int(11) NOT NULL,
+  `stock_user_type` varchar(60) NOT NULL,
+  `stock_raw_id` int(11) NOT NULL,
+  `stock_user_id` int(11) NOT NULL,
+  `stock_type` varchar(60) NOT NULL,
+  `stock_outQty` int(11) NOT NULL,
+  `stock_changes` text NOT NULL,
+  `stock_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stock_history`
+--
+
+INSERT INTO `stock_history` (`stock_id`, `stock_user_type`, `stock_raw_id`, `stock_user_id`, `stock_type`, `stock_outQty`, `stock_changes`, `stock_date`) VALUES
+(31, 'Administrator', 9, 1, 'Stock In', 10, '792 -> 802', '2025-05-29 12:42:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task`
+--
+
+CREATE TABLE `task` (
+  `task_id` int(11) NOT NULL,
+  `task_user_id` int(11) NOT NULL,
+  `task_name` varchar(60) NOT NULL,
+  `task_material` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`task_material`)),
+  `task_category` varchar(60) NOT NULL,
+  `date_start` date NOT NULL,
+  `date_end` date DEFAULT NULL,
+  `status` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO `task` (`task_id`, `task_user_id`, `task_name`, `task_material`, `task_category`, `date_start`, `date_end`, `status`) VALUES
+(14, 4, 'j task', '[{\"raw_id\":9,\"quantity\":20,\"unit\":\"kilo\"},{\"raw_id\":10,\"quantity\":10,\"unit\":\"bundle\"}]', 'j cat', '2025-05-23', NULL, 'On Progress');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_admin`
+--
+
+CREATE TABLE `user_admin` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `username` varchar(60) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_admin`
+--
+
+INSERT INTO `user_admin` (`id`, `fullname`, `username`, `password`, `date_created`) VALUES
+(1, 'John Doe', 'admin', '$2y$10$JQ1lmgWTeqdSVD3DFIibqeE.0BAjjBrhaBNt5qdLOXV5Fa6os7me.', '2025-05-04 09:54:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_customer`
+--
+
+CREATE TABLE `user_customer` (
+  `customer_id` int(11) NOT NULL,
+  `customer_fullname` varchar(60) NOT NULL,
+  `customer_email` varchar(60) NOT NULL,
+  `customer_phone` varchar(50) NOT NULL,
+  `customer_password` varchar(255) NOT NULL,
+  `customer_status` int(11) NOT NULL DEFAULT 1 COMMENT '0=restricted,1=active'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_customer`
+--
+
+INSERT INTO `user_customer` (`customer_id`, `customer_fullname`, `customer_email`, `customer_phone`, `customer_password`, `customer_status`) VALUES
+(6, 'Joshua Anderson Padilla', 'jcustom@gmail.com', '09454454741', '$2y$10$Ehvc1AwmVnjhfMT.arbdEuseTS2l9bR9P0eQRjpDOXHHh7eZ9Shx6', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_member`
+--
+
+CREATE TABLE `user_member` (
+  `id` int(11) NOT NULL,
+  `id_number` varchar(60) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `phone` varchar(60) NOT NULL,
+  `role` varchar(60) NOT NULL,
+  `sex` varchar(60) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '0=NonVerify,1=Verified,2=disabled'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_member`
+--
+
+INSERT INTO `user_member` (`id`, `id_number`, `fullname`, `email`, `phone`, `role`, `sex`, `password`, `date_created`, `status`) VALUES
+(4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-05 04:07:41', 1),
+(7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-29 06:51:36', 0),
+(9, '1312312312', 'justin melvin', 'jmelvin@gmail.com', '098454454744', 'knotter', 'male', '$2y$10$fUOOEVyd4Fs/Culb1ln9bO.68HdtXxHmjKT8snl6EEM4spPzl4jW2', '2025-05-22 16:36:28', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weaver`
+--
+
+CREATE TABLE `weaver` (
+  `id` int(11) NOT NULL,
+  `category` varchar(60) NOT NULL,
+  `product` varchar(60) NOT NULL,
+  `product_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`product_details`)),
+  `status` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`prod_id`);
+
+--
+-- Indexes for table `product_category`
+--
+ALTER TABLE `product_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `product_stock`
+--
+ALTER TABLE `product_stock`
+  ADD PRIMARY KEY (`pstock_id`);
+
+--
+-- Indexes for table `raw_materials`
+--
+ALTER TABLE `raw_materials`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock_history`
+--
+ALTER TABLE `stock_history`
+  ADD PRIMARY KEY (`stock_id`),
+  ADD KEY `stock_raw_id` (`stock_raw_id`),
+  ADD KEY `stock_user_id` (`stock_user_id`);
+
+--
+-- Indexes for table `task`
+--
+ALTER TABLE `task`
+  ADD PRIMARY KEY (`task_id`);
+
+--
+-- Indexes for table `user_admin`
+--
+ALTER TABLE `user_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user_customer`
+--
+ALTER TABLE `user_customer`
+  ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `user_member`
+--
+ALTER TABLE `user_member`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `weaver`
+--
+ALTER TABLE `weaver`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `product_category`
+--
+ALTER TABLE `product_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `product_stock`
+--
+ALTER TABLE `product_stock`
+  MODIFY `pstock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `raw_materials`
+--
+ALTER TABLE `raw_materials`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `stock_history`
+--
+ALTER TABLE `stock_history`
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `task`
+--
+ALTER TABLE `task`
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `user_admin`
+--
+ALTER TABLE `user_admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `user_customer`
+--
+ALTER TABLE `user_customer`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `user_member`
+--
+ALTER TABLE `user_member`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `weaver`
+--
+ALTER TABLE `weaver`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
