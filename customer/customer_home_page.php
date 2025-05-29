@@ -59,6 +59,15 @@ include "component/header.php";
                     <input type="radio" name="price" class="mr-2 price-filter" data-price-range="2000-3000">
                     PHP 2000 - PHP 3000
                 </label>
+                 <label class="flex items-center">
+                    <input type="radio" name="price" class="mr-2 price-filter" data-price-range="3000-4000">
+                    PHP 3000 - PHP 4000
+                </label>
+
+                <label class="flex items-center">
+                    <input type="radio" name="price" class="mr-2 price-filter" data-price-range="4000-5000">
+                    PHP 4000 - PHP 5000
+                </label>
             </div>
         </aside>
 

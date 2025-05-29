@@ -46,6 +46,72 @@ class global_class extends db_connect
         }
     }
     
+
+
+
+
+ public function AddToCart($userId, $productId)
+{
+    // Escaping user input to prevent SQL injection
+    $userId = mysqli_real_escape_string($this->conn, $userId);
+    $productId = mysqli_real_escape_string($this->conn, $productId);
+
+    // Fetch product info
+    $productInfoResult = $this->conn->query("SELECT * FROM product WHERE prod_id='$productId'");
+    $productInfo = $productInfoResult->fetch_assoc();
+
+    // Fetch cart info
+    $cartInfoResult = $this->conn->query("SELECT * FROM cart WHERE cart_user_id='$userId' AND cart_prod_id='$productId'");
+    $cartInfo = $cartInfoResult->fetch_assoc();
+
+   
+    // Check if cart quantity exceeds product stock
+    if (isset($cartInfo['cart_Qty']) && $cartInfo['cart_Qty'] >= $productInfo['prod_stocks']) {
+        return "MaximumExceed";
+    }
+    $checkProductInCart = $this->conn->query("SELECT * FROM cart WHERE cart_user_id='$userId' AND cart_prod_id='$productId'");
+
+    if ($checkProductInCart->num_rows > 0) {
+        $query = "UPDATE `cart` SET `cart_Qty` = `cart_Qty` + 1 WHERE `cart_user_id` = '$userId' AND `cart_prod_id` = '$productId'";
+        $response = 'Cart Updated!';
+    } else {
+        $query = "INSERT INTO `cart` (`cart_prod_id`, `cart_Qty`, `cart_user_id`) VALUES ('$productId', 1, '$userId')";
+        $response = 'Added To Cart!';
+    }
+    if ($this->conn->query($query)) {
+        return $response;
+    } else {
+        return 400; 
+    }
+}
+
+
+
+
+
+
+
+
+
+public function fetch_product_info($product_id){
+        $query = $this->conn->prepare("SELECT 
+                product.*, 
+                product_category.*
+            FROM product
+            LEFT JOIN product_category
+            ON product.prod_category_id = product_category.category_id
+        WHERE product.prod_id = $product_id
+        "    
+    );
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+
+
+
+    
     
 
 

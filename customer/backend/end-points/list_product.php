@@ -17,7 +17,7 @@
     ?>
         <!-- Product Card -->
         <div class="bg-white p-4 rounded shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl product-card" data-category-id="<?=$product['prod_category_id']?>" data-price="<?=$product['prod_price']?>">
-            <a href="view_product.php?product_id=<?=$product['prod_id']?>">
+            <a href="view_product?product_id=<?=$product['prod_id']?>">
 
                 <!-- Product Image -->
                 <img src="../upload/<?=$product['prod_image']?>" alt="Product Image" class="w-full rounded mb-4 transition-transform hover:scale-105">

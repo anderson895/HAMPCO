@@ -297,3 +297,12 @@ $("#FrmRegister_Customer").submit(function (e) {
         }
     });
 });
+
+
+
+
+
+
+
+
+
