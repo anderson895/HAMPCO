@@ -281,6 +281,98 @@ class global_class extends db_connect
 
 
 
+public function UpdateProduct(
+    $product_Id,
+    $product_Name,
+    $product_Price,
+    $product_Category,
+    $product_Description,
+    $uniqueFileName
+) {
+    $query = "UPDATE `product` SET 
+                `prod_name` = ?, 
+                `prod_price` = ?, 
+                `prod_category_id` = ?, 
+                `prod_description` = ?";
+    if (!empty($uniqueFileName)) {
+        $query .= ", `prod_image` = ?";
+    }
+
+    $query .= " WHERE `prod_id` = ?";
+
+    $stmt = $this->conn->prepare($query);
+    if (!$stmt) {
+        return false;
+    }
+
+    if (!empty($uniqueFileName)) {
+        $stmt->bind_param(
+            "sdissi",
+            $product_Name,
+            $product_Price,
+            $product_Category,
+            $product_Description,
+            $uniqueFileName,
+            $product_Id
+        );
+    } else {
+        $stmt->bind_param(
+            "sdisi",
+            $product_Name,
+            $product_Price,
+            $product_Category,
+            $product_Description,
+            $product_Id
+        );
+    }
+
+    $result = $stmt->execute();
+    $stmt->close();
+
+    return $result;
+
+    
+}
+
+
+public function DeleteProduct($prod_id) {
+        $status = 0; 
+        $query = $this->conn->prepare(
+            "UPDATE `product` SET `prod_status` = ? WHERE `prod_id` = ?"
+        );
+        $query->bind_param("is", $status, $prod_id);
+        
+        if ($query->execute()) {
+            return 'success';
+        } else {
+            return 'Error: ' . $query->error;
+        }
+    }
+
+
+
+    public function GetProductById($product_Id) {
+        $query = "SELECT * FROM `product` WHERE `prod_id` = ? LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("i", $product_Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $product = $result->fetch_assoc();
+            $stmt->close();
+            return $product;
+        } else {
+            $stmt->close();
+            return false;
+        }
+    }
+
+
 
 
 

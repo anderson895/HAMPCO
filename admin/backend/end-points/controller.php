@@ -89,11 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }else if ($_POST['requestType'] == 'AddProduct') {
 
-
-                // echo "<pre>";
-                // print_r($_FILES);
-                // echo "</pre>";
-
                 $product_Name = $_POST['rm_name'];
                 $product_Price = $_POST['rm_price'];
                 
@@ -121,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         );
                 
                 
-                        echo 200;
+                        echo "success";
                       
                     } else {
                         echo 'Error uploading image. Please try again.';
@@ -131,6 +126,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
         
 
+        
+        }else if ($_POST['requestType'] == 'UpdateProduct') {
+
+             $product_Id = $_POST['rm_id'];
+            $product_Name = $_POST['rm_name'];
+            $product_Price = $_POST['rm_price'];
+            $product_Description = $_POST['rm_description'];
+            $product_Category = $_POST['rm_product_Category'];
+            $product_Image = $_FILES['rm_product_image'];
+
+            $uploadDir = '../../../upload/';
+            $uniqueFileName = null;
+
+            // Step 1: Get current image filename from DB
+            $currentProduct = $db->GetProductById($product_Id); // You need to have this method implemented
+            $currentImage = $currentProduct ? $currentProduct['prod_image'] : null;
+
+            if ($product_Image['error'] === UPLOAD_ERR_OK) {
+                // Step 2: Unlink old image if exists
+                if ($currentImage && file_exists($uploadDir . $currentImage)) {
+                    unlink($uploadDir . $currentImage);
+                }
+
+                // Step 3: Upload new image
+                $fileExtension = pathinfo($product_Image['name'], PATHINFO_EXTENSION);
+                $uniqueFileName = uniqid('product_', true) . '.' . $fileExtension;
+                $uploadFilePath = $uploadDir . $uniqueFileName;
+
+                if (!move_uploaded_file($product_Image['tmp_name'], $uploadFilePath)) {
+                    echo 'Error uploading image. Please try again.';
+                    exit;
+                }
+            } elseif ($product_Image['error'] !== UPLOAD_ERR_NO_FILE) {
+                echo 'There was an error with the image upload.';
+                exit;
+            }
+
+            $prod_id = $db->UpdateProduct(
+                $product_Id,
+                $product_Name,
+                $product_Price,
+                $product_Category,
+                $product_Description,
+                $uniqueFileName
+            );
+
+            if ($prod_id) {
+                echo 200;
+            } else {
+                echo 'Failed to update product.';
+            }
+
+
+        
+        }else if($_POST['requestType'] =='DeleteProduct'){
+
+                $prod_id = $_POST['prod_id'];
+            
+
+                $result = $db->DeleteProduct($prod_id);
+
+                if ($result == "success") {
+                    echo json_encode(["status" => 200, "message" => "Remove Successfully"]);
+                } else {
+                    echo json_encode(["status" => 400, "message" => $result]);
+                }
         
         } else{
             echo 'requestType NOT FOUND';

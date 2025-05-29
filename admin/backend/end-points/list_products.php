@@ -16,17 +16,19 @@ if ($fetch_all_materials->num_rows > 0) {
     <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row['prod_description']); ?></td>
     <td class="py-3 px-6 flex space-x-2">
         <!-- Update Button -->
-        <button class="updateRmBtn bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
+       <button class="updateRmBtn bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
             data-id="<?php echo htmlspecialchars($row['prod_id']); ?>" 
-            data-prod_name="<?php echo htmlspecialchars($row['prod_name']); ?>"
-            data-prod_description="<?php echo htmlspecialchars($row['prod_description']); ?>"
-            data-prod_category_id="<?php echo htmlspecialchars($row['prod_category_id']); ?>">
+            data-name="<?php echo htmlspecialchars($row['prod_name']); ?>"
+            data-description="<?php echo htmlspecialchars($row['prod_description']); ?>"
+            data-price="<?php echo htmlspecialchars($row['prod_price']); ?>"
+            data-category-id="<?php echo htmlspecialchars($row['prod_category_id']); ?>">
             <span class="material-icons text-sm mr-1">edit</span> Update
         </button>
 
+
         <!-- Delete Button -->
         <button class="deleteRmBtn bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
-            data-id="<?php echo htmlspecialchars($row['prod_id']); ?>" 
+            data-prod_id="<?php echo htmlspecialchars($row['prod_id']); ?>" 
             data-prod_name="<?php echo htmlspecialchars($row['prod_name']); ?>">
             <span class="material-icons text-sm mr-1">delete</span> Remove
         </button>
@@ -51,3 +53,280 @@ if ($fetch_all_materials->num_rows > 0) {
 }
 ?>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="UpdateRawMaterialsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display:none;">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h2 id="modalTitle" class="text-xl font-semibold mb-4">Update Product</h2>
+        <form id="frmUpdateProduct">
+            <input type="hidden" name="rm_id" id="rmid"> 
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Name</label>
+                <input type="text" id="rm_name" name="rm_name" class="w-full border rounded p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Description</label>
+                <input type="text" id="rm_description" name="rm_description" class="w-full border rounded p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Price</label>
+                <input type="text" id="rm_price" name="rm_price" class="w-full border rounded p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="productCategory" class="block text-sm font-medium">Choose a Category</label>
+                <select id="productCategory" name="rm_product_Category" class="w-full border rounded p-2" required>
+                    <option value="" disabled selected>Select a Category</option>
+                    <?php foreach ($db->fetch_all_category() as $category): ?>
+                        <option value="<?= $category['category_id'] ?>"><?= $category['category_name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="productImage" class="block text-sm font-medium">Product Image</label>
+                <input type="file" id="productImage" name="rm_product_image" class="w-full border rounded p-2" accept="image/*">
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button type="button" id="closeUpdateProductModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+                <button type="submit" id="submitUpdateProduct" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Update</button>
+            </div>
+      
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+$(document).ready(function () {
+
+// $('.togglerDeleteProduct').click(function (e) { 
+    $(document).on('click', '.deleteRmBtn', function(e) {
+        e.preventDefault();
+        var prod_id = $(this).data('prod_id');
+        console.log(prod_id);
+    
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove it!',
+            cancelButtonText: 'No, cancel!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "backend/end-points/controller.php",
+                    type: 'POST',
+                    data: { prod_id: prod_id, requestType: 'DeleteProduct' },
+                    dataType: 'json',  // Expect a JSON response
+                    success: function(response) {
+                        if (response.status === 200) {
+                            Swal.fire(
+                                'Deleted!',
+                                response.message,  // Show the success message from the response
+                                'success'
+                            ).then(() => {
+                                 location.reload(); 
+                            });
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                response.message,  // Show the error message from the response
+                                'error'
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error!',
+                            'There was a problem with the request.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+
+    
+
+    $('.stockInRmBtn').click(function () {
+        selectedId = $(this).data('id');
+        console.log(selectedId);
+        
+        $("#raw_id").val(selectedId);
+        $('#stockInRmModal').fadeIn();
+    });
+
+
+     $('.closeStockInRmModal').click(function () {
+        selectedId = $(this).data('id');
+        $('#stockInRmModal').fadeOut();
+    });
+
+    
+
+
+    $("#frmRawStockin").submit(function (e) {
+            e.preventDefault();
+
+            $('.spinner').show();
+            $('#btnRawStockin').prop('disabled', true);
+        
+            var formData = new FormData(this); 
+            formData.append('requestType', 'RawStockin');
+            $.ajax({
+                type: "POST",
+                url: "backend/end-points/controller.php",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json", 
+                beforeSend: function () {
+                    $("#btnRawStockin").prop("disabled", true).text("Processing...");
+                },
+                success: function (response) {
+                    console.log(response); 
+                    
+                    if (response.status ==="success") {
+                        alertify.success(response.message);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    } else {
+                        $('.spinner').hide();
+                        $('#btnRawStockin').prop('disabled', false);
+                        alertify.error(response.message);
+                    }
+                },
+                complete: function () {
+                    $("#btnRawStockin").prop("disabled", false).text("Submit");
+                }
+            });
+        });
+
+
+
+
+
+   $('.updateRmBtn').click(function () {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const description = $(this).data('description');
+        const price = $(this).data('price');
+        const categoryId = $(this).data('category-id');
+
+        $('#modalTitle').text('Update Raw Material');
+        $('#rmid').val(id);
+        $('#rm_name').val(name);
+        $('#rm_description').val(description);
+        $('#rm_price').val(price);
+        $('#productCategory').val(categoryId);
+
+        $('#UpdateRawMaterialsModal').fadeIn();
+    });
+
+    $('#closeUpdateProductModal').click(function () {
+        $('#UpdateRawMaterialsModal').fadeOut();
+    });
+
+
+
+
+
+
+
+  $(document).ready(function() {
+      $('#frmUpdateProduct').on('submit', function(e) {
+          e.preventDefault();
+          var category = $('#productCategory').val();
+          if (category === null) {
+              alertify.error("Please select a category.");
+              return; 
+          }
+        
+           
+          $('.spinner').show();
+          $('#frmUpdateProduct').prop('disabled', true);
+  
+          // Create a new FormData object
+          var formData = new FormData(this);
+          formData.append('requestType', 'UpdateProduct'); 
+  
+          // Perform the AJAX request
+          $.ajax({
+              type: "POST",
+              url: "backend/end-points/controller.php",
+              data: formData,
+              contentType: false,
+              processData: false, 
+              success: function(response) {
+                console.log(response)
+                  if(response==200){
+                    $('#AddproductModal').hide();
+                    $('.spinner').hide();
+                    $('#frmUpdateProduct').prop('disabled', false);
+                    location.reload();
+                  }
+              },
+              error: function(xhr, status, error) {
+                  alert('Error: ' + error);
+              }
+          });
+      });
+  });
+
+
+
+
+
+
+
+
+
+
+    $('#submitDeleteRawMaterials').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "backend/end-points/controller.php",
+            data: {
+                requestType: "deleteRawMaterial",
+                rmid: selectedId
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.status === 'success') {
+                    alertify.success(response.message);
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    alertify.error(response.message);
+                }
+            }
+        });
+
+        $('#UpdateRawMaterialsModal').fadeOut();
+    });
+});
+</script>

@@ -28,7 +28,7 @@
                 <th class="py-3 px-6 text-left">Price</th>
                 <th class="py-3 px-6 text-left">Category</th>
                 <th class="py-3 px-6 text-left">Description</th>
-                <th class="py-3 px-6 text-center">Actions</th>
+                <th class="py-3 px-6 text-left"></th>
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm">
@@ -51,7 +51,7 @@
 
 
 <!-- Modal -->
-<div id="ProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center " style="display:none;">
+<div id="AddProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center " style="display:none;">
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">Add Product</h2>
         <form id="AddProductForm">
@@ -100,14 +100,24 @@
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
 <script>
     $(document).ready(function(){
         $('#AddProduct').on('click', function(){
-            $('#ProductModal').fadeIn();
+            $('#AddProductModal').fadeIn();
         });
 
         $('#closeAddProductModal').on('click', function(){
-            $('#ProductModal').fadeOut();
+            $('#AddProductModal').fadeOut();
         });
 
         $('#AddProductForm').on('submit', function(e){
@@ -115,21 +125,22 @@
 
             var formData = new FormData(this);
             formData.append('requestType', 'AddProduct');
+
             $.ajax({
                 type: "POST",
                 url: "backend/end-points/controller.php",
                 data: formData,
                 contentType: false,
                 processData: false,
-                dataType: "json",
+                dataType: "text",  // expecting plain text response
                 success: function (response) {
-                    if (response.status === 'success') {
-                        alertify.success(response.message);  
+                    if (response.trim() === 'success') {  // check the string directly
+                        alertify.success('Product added successfully');  
                         setTimeout(function () {
-                            window.location.href = "inventory"; 
+                            location.reload(); 
                         }, 1000);
                     } else {
-                        alertify.error(response.message); 
+                        alertify.error('Failed to add product');
                         $('.spinner').hide();
                     }
                 }
