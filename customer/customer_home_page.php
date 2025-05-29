@@ -91,5 +91,3 @@ include "component/header.php";
 
 
 <?php include "component/footer.php"; ?>
-
-<script src="js/filter_price_category.js"></script>

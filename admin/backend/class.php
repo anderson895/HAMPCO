@@ -298,7 +298,6 @@ class global_class extends db_connect
                     um.date_created AS umdate_created, 
                     um.status AS umstatus
                 FROM user_member AS um
-                WHERE um.status != '1'
                 ORDER BY um.id ASC";
     
         $result = $this->conn->query($sql);

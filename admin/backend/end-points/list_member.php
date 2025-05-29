@@ -3,6 +3,14 @@ $fetch_all_non_verify_member = $db->fetch_all_non_verify_member();
 
 if ($fetch_all_non_verify_member->num_rows > 0) {
     while ($row = $fetch_all_non_verify_member->fetch_assoc()) {
+
+
+        if($row['umstatus']==1){
+            $status="Verified";
+        }else{
+             $status="Waiting For Verification";
+        }
+
 ?>
     <tr class="border-b border-gray-200 hover:bg-gray-50">
         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row['umid_number']); ?></td>
@@ -11,28 +19,31 @@ if ($fetch_all_non_verify_member->num_rows > 0) {
         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row['umphone']); ?></td>
         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row['umrole']); ?></td>
         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row['umsex']); ?></td>
-        <td class="py-3 px-6 text-left">Waiting For Verification</td>
+        <td class="py-3 px-6 text-left"><?=$status?></td>
         <td class="py-3 px-6 flex space-x-2">
             <button 
-                class="verifyBtn bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
+                class="verifyBtn bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow <?= $row['umstatus'] == 1 ? 'opacity-50 cursor-not-allowed' : '' ?>"
                 data-id="<?php echo htmlspecialchars($row['umid']); ?>" 
-                data-name="<?php echo htmlspecialchars($row['umfullname']); ?>">
+                data-name="<?php echo htmlspecialchars($row['umfullname']); ?>"
+                <?= $row['umstatus'] == 1 ? 'disabled' : '' ?>>
                 <span class="material-icons text-sm mr-1">check_circle</span> Verify
             </button>
             <button 
-                class="declineBtn bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow"
+                class="declineBtn bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full text-xs flex items-center shadow <?= $row['umstatus'] == 1 ? 'opacity-50 cursor-not-allowed' : '' ?>"
                 data-id="<?php echo htmlspecialchars($row['umid']); ?>" 
-                data-name="<?php echo htmlspecialchars($row['umfullname']); ?>">
+                data-name="<?php echo htmlspecialchars($row['umfullname']); ?>"
+                <?= $row['umstatus'] == 1 ? 'disabled' : '' ?>>
                 <span class="material-icons text-sm mr-1">cancel</span> Decline
             </button>
         </td>
+
     </tr>
 <?php
     }
 } else {
 ?>
     <tr>
-        <td colspan="8" class="py-3 px-6 text-center">No unverified members found.</td>
+        <td colspan="8" class="py-3 px-6 text-center">No members found.</td>
     </tr>
 <?php
 }
