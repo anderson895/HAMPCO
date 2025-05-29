@@ -87,6 +87,50 @@ class global_class extends db_connect
 
 
 
+
+
+
+
+
+
+
+     public function LoginCustomer($email, $password)
+    {
+        $query = $this->conn->prepare("SELECT * FROM `user_customer` WHERE `customer_email` = ? AND `customer_status` = '1'");
+        $query->bind_param("s", $email);
+    
+        if ($query->execute()) {
+            $result = $query->get_result();
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+    
+                if (password_verify($password, $user['customer_password'])) {
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                    }
+    
+                    $_SESSION['customer_id'] = $user['customer_id'];
+                    $query->close();
+                    return ['success' => true, 'data' => $user];
+                } else {
+                    // Password mismatch
+                    $query->close();
+                    return ['success' => false, 'message' => 'Incorrect password.'];
+                }
+            } else {
+                // No user found
+                $query->close();
+                return ['success' => false, 'message' => 'Email not found or account inactive.'];
+            }
+        } else {
+            $query->close();
+            return ['success' => false, 'message' => 'Database error during execution.'];
+        }
+    }
+    
+
+
+
     public function RegisterMember($fname, $mname, $email, $phone, $role, $sex, $id_number, $password)
     {
         // Step 1: Check if the email already exists in the database

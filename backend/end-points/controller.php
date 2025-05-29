@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             
         } if ($_POST['requestType'] == 'RegisterCustomer') {
-            
+
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
@@ -60,6 +60,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $password = $_POST['password'];
 
             $result = $db->LoginMember($email, $password);
+
+            if ($result['success']) {
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Login successful!',
+                    'data' => $result['data'] 
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => $result['message'] 
+                ]);
+            }
+        }else if ($_POST['requestType'] == 'LoginCustomer') {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            $result = $db->LoginCustomer($email, $password);
 
             if ($result['success']) {
                 echo json_encode([

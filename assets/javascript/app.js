@@ -54,6 +54,44 @@ $("#FrmLogin_Member").submit(function (e) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+$("#FrmLogin_Customer").submit(function (e) { 
+    e.preventDefault();
+    $('.spinner').show();
+    var formData = $(this).serializeArray(); 
+    formData.push({ name: 'requestType', value: 'LoginCustomer' });
+    var serializedData = $.param(formData);
+
+    $.ajax({
+        type: "POST",
+        url: "backend/end-points/controller.php",
+        data: serializedData,
+        dataType: "json", 
+        success: function (response) {
+            if (response.status === 'success') {
+                alertify.success(response.message);  
+                setTimeout(function () {
+                    window.location.href = "customer/customer_home_page"; 
+                }, 1000);
+            } else {
+                alertify.error(response.message); 
+                $('.spinner').hide();
+            }
+        }
+    });
+});
+
+
+
 $("#FrmRegister_Member").submit(function (e) { 
     e.preventDefault();
     $('.spinner').show();
