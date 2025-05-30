@@ -112,8 +112,10 @@ if (isset($_SESSION['id'])) {
     </button>
     <div id="assetsDropdown" class="ml-8 space-y-2 hidden">
         <a href="products" class="block text-gray-600 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">Products</a>
+        <a href="prod_stock_logs" class="block text-gray-600 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">Product Logs</a>
         <a href="raw_materials" class="block text-gray-600 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">Raw Materials</a>
         <a href="raw_stock_logs" class="block text-gray-600 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">Raw Logs</a>
+        
         
     </div>
 

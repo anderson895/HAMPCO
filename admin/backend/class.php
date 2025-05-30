@@ -13,7 +13,7 @@ class global_class extends db_connect
     }
 
 
-     public function list_stock_logs()
+     public function list_raw_stock_logs()
     {
         $stmt = $this->conn->prepare("
             SELECT 
@@ -46,6 +46,47 @@ class global_class extends db_connect
         return $result;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function list_prod_stock_logs()
+{
+    $stmt = $this->conn->prepare("
+        SELECT 
+            product_stock.pstock_id,
+            product_stock.pstock_stock_type,
+            product_stock.pstock_stock_outQty,
+            product_stock.pstock_stock_changes,
+            product_stock.pstock_stock_date,
+            product.prod_id AS prod_id,
+            product.prod_name,
+            user_admin.id AS user_id,
+            user_admin.fullname AS fullname
+        FROM product_stock
+        LEFT JOIN user_admin
+            ON user_admin.id = product_stock.pstock_user_id
+        LEFT JOIN product
+            ON product.prod_id = product_stock.pstock_prod_id
+        ORDER BY `pstock_id` DESC
+    ");
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result;
+}
 
 
      public function get_list_task()

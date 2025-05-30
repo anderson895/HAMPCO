@@ -28,7 +28,7 @@
         </thead>
         <tbody class="text-gray-600 text-sm">
             <?php 
-            include "backend/end-points/list_raw_stock_logs.php";
+            include "backend/end-points/list_prod_stock_logs.php";
             ?>
         </tbody>
     </table>
@@ -36,7 +36,6 @@
 
 <?php include "components/footer.php";?>
 
-<script src="assets/js/app.js"></script>
 
 <script>
 // jQuery search functionality
