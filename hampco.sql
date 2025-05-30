@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 04:36 PM
+-- Generation Time: May 30, 2025 at 02:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `cart_user_id`, `cart_prod_id`, `cart_Qty`) VALUES
-(4, 6, 8, 12),
+(4, 6, 8, 3),
 (5, 6, 7, 5);
 
 -- --------------------------------------------------------
@@ -253,8 +253,9 @@ CREATE TABLE `user_member` (
 
 INSERT INTO `user_member` (`id`, `id_number`, `fullname`, `email`, `phone`, `role`, `sex`, `password`, `date_created`, `status`) VALUES
 (4, '12312', 'joshua padilla', 'joshua@gmail.com', '09454454741', 'warper', 'male', '$2y$10$KbOCoR8Joxq.8ARDTgbI0ed6mfXg/4ht6NtDjyWZCO6KVwYkLi1Gi', '2025-05-05 04:07:41', 1),
-(7, '111111', 'alden  padilla', 'sample@gmail.com', '09454454741', 'knotter', 'male', '$2y$10$ykHUkxTH2qycU7.vNuruAeOHakOHmEN/cAJmnz/X2cxqO34tCYXUK', '2025-05-29 06:51:36', 0),
-(9, '1312312312', 'justin melvin', 'jmelvin@gmail.com', '098454454744', 'knotter', 'male', '$2y$10$fUOOEVyd4Fs/Culb1ln9bO.68HdtXxHmjKT8snl6EEM4spPzl4jW2', '2025-05-22 16:36:28', 1);
+(9, '1312312312', 'justin melvin', 'jmelvin@gmail.com', '098454454744', 'knotter', 'male', '$2y$10$fUOOEVyd4Fs/Culb1ln9bO.68HdtXxHmjKT8snl6EEM4spPzl4jW2', '2025-05-22 16:36:28', 1),
+(10, '09090909', 'john doe', 'jdoe@gmail.com', '09454454744', 'weaver', 'male', '$2y$10$sqo1YtT9PTf8vD2fQHjWge9MX2cteKaXKUBqE/jjUDMPNl4.fqKqi', '2025-05-29 23:16:52', 0),
+(11, '09090909', 'juan doe', 'dodoe@gmail.com', '09454454744', 'weaver', 'male', '$2y$10$klFRpUlRX.7bFVd13mDuMeyVup5jcsvggOGG2H889oo0f/2w2GoGK', '2025-05-29 23:19:51', 0);
 
 -- --------------------------------------------------------
 
@@ -404,7 +405,7 @@ ALTER TABLE `user_customer`
 -- AUTO_INCREMENT for table `user_member`
 --
 ALTER TABLE `user_member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `weaver`
