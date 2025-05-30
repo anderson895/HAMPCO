@@ -20,6 +20,7 @@
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Product Name</th>
                 <th class="py-3 px-6 text-left">Name</th>
+                <th class="py-3 px-6 text-left">Account Type</th>
                 <th class="py-3 px-6 text-left">Activity</th>
                 <th class="py-3 px-6 text-left">Quantity</th>
                 <th class="py-3 px-6 text-left">Changes</th>

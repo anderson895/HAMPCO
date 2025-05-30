@@ -5,7 +5,7 @@
 
 $user_id=$_SESSION['id'];
 
-$list_stock_logs = $db->list_stock_logs();
+$list_stock_logs = $db->list_raw_stock_logs();
 
 
 

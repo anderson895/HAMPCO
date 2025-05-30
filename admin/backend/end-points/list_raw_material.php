@@ -1,5 +1,5 @@
 <?php 
-$fetch_all_materials = $db->list_raw_stock_logs();
+$fetch_all_materials = $db->fetch_all_materials();
 
 if ($fetch_all_materials->num_rows > 0) {
     while ($row = $fetch_all_materials->fetch_assoc()) {
